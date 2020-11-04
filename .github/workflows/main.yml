@@ -10,17 +10,24 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v2
-            -   name: Set up JDK 1.8
-                uses: actions/setup-java@v1
-                with:
-                    java-version: 1.8
-            -   name: Build with Maven
-                run:  mvn -B package --file pom.xml
-            -   name: check
-                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
+            #            -   uses: actions/checkout@v2
+            #            -   name: Set up JDK 1.8
+            #                uses: actions/setup-java@v1
+            #                with:
+            #                    java-version: 1.8
+            #            -   name: Build with Maven
+            #                run:  mvn -B package --file pom.xml
+            #            -   name: check
+            #                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
             -   name: test
                 run:  |
                       id
                       pwd
-                      ssh root@xclass.highspeed.vip
+                      ls -al
+                      ssh -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
+
+
+
+
+#    scp -P 50022 -i ./ycz.log -o "StrictHostKeyChecking no" ./ycz.log root@xclass.highspeed.vip:/tmp
+#    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
