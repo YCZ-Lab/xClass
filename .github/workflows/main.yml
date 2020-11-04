@@ -22,10 +22,13 @@ jobs:
             #            -   name: check
             #                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
             -   name: test
+                inputs:
+                    privateKey:
+                    knownHosts:
                 run:  |
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                      echo ${privateKey}
-                      echo ${knownHosts}
+                      echo ${{inputs.privateKey}}
+                      echo ${{inputs.knownHosts}}
                       echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
