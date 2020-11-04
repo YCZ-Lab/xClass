@@ -20,7 +20,7 @@ jobs:
             #            -   name: check
             #                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
             -   name: test
-                with:
+                env:
                     privateKey: ${{secrets.PRIVATEKEY}}
                     knownHosts: ${{secrets.KNOWNHOSTS}}
                 run:  |
