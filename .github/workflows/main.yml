@@ -10,8 +10,11 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            #            -   uses: actions/checkout@v2
-            #            -   name: Set up JDK 1.8
+            -   uses: actions/checkout@v2
+            -   name: Set up JDK 1.8
+                with:
+                    privateKey: ${{secrets.PRIVATEKEY}}
+                    knownHosts: ${{secrets.KNOWNHOSTS}}
             #                uses: actions/setup-java@v1
             #                with:
             #                    java-version: 1.8
@@ -22,11 +25,9 @@ jobs:
             -   name: test
                 run:  |
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                      mkdir -p ~/.ssh/
-                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
-                          ls -al ~/.ssh/
-                          echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-                          cat ~/.ssh/known_hosts
+                      echo $privateKey
+                      echo $knownHosts
+                      echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
 
@@ -35,6 +36,9 @@ jobs:
 
 
 
+#                          mkdir -p ~/.ssh/
+#                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
+#                          ls -al ~/.ssh/
 
 #                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
 #                                        chmod 600 ~/.ssh/private.key
