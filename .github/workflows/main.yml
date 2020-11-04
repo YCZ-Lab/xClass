@@ -25,12 +25,11 @@ jobs:
                     knownHosts: ${{secrets.KNOWNHOSTS}}
                 run:  |
                       mkdir -p ~/.ssh/
-                      echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
                       echo ${privateKey} > ~/.ssh/private.key
-                      echo "*******************************************************"
                       echo ${knownHosts} > ~/.ssh/known_hosts
-                      echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                       ls -al ~/.ssh/
+                      cat ~/.ssh/private.key
+                      echo "============================================"
                       cat ~/.ssh/known_hosts
 
 
