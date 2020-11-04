@@ -31,8 +31,8 @@ jobs:
                       ls -al ~/.ssh/
                       cat ~/.ssh/private.key
                       echo "============================================"
-                      echo "$privateKey"
-                      echo "$knownHosts"
+                      echo ">>>$privateKey<<<"
+                      echo ">>>$knownHosts<<<"
                       cat ~/.ssh/known_hosts
                       ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
