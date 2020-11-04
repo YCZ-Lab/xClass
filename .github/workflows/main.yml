@@ -12,13 +12,11 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
             -   name: Set up JDK 1.8
-                user: ./
+                uses: actions/setup-java@v1
                 with:
-                    privateKey: ${{secrets.PRIVATEKEY}}
-                    knownHosts: ${{secrets.KNOWNHOSTS}}
-            #                uses: actions/setup-java@v1
-            #                with:
-            #                    java-version: 1.8
+                    java-version: 1.8
+                    privateKey:   ${{secrets.PRIVATEKEY}}
+                    knownHosts:   ${{secrets.KNOWNHOSTS}}
             #            -   name: Build with Maven
             #                run:  mvn -B package --file pom.xml
             #            -   name: check
