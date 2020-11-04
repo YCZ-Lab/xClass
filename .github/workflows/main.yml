@@ -26,6 +26,7 @@ jobs:
                 run:  |
                       mkdir -p ~/.ssh/
                       echo ${privateKey} > ~/.ssh/private.key
+                      chmod 600 ~/.ssh/private.key
                       echo ${knownHosts} > ~/.ssh/known_hosts
                       ls -al ~/.ssh/
                       cat ~/.ssh/private.key
@@ -39,9 +40,8 @@ jobs:
 
 
 
-#                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
+                      #                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
 
-#                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
-#                                        chmod 600 ~/.ssh/private.key
-#    scp -P 50022 -i ./ycz.log -o "StrictHostKeyChecking no" ./ycz.log root@xclass.highspeed.vip:/tmp
-#    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
+                      #                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
+                #    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
+                #    scp -P 50022 -i ./ycz.log -o "StrictHostKeyChecking no" ./ycz.log root@xclass.highspeed.vip:/tmp
