@@ -34,5 +34,5 @@ jobs:
           echo ******************************
           ping localhost -c 5
           echo ******************************
-          curl http://xclass.highspeed.vip
+          curl https://xclass.highspeed.vip
           echo ******************************
