@@ -24,8 +24,8 @@ jobs:
             -   name: test
                 run:  |
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                      echo $privateKey
-                      echo $knownHosts
+                      echo ${{inputs.privateKey}}
+                      echo ${{inputs.knownHosts}}
                       echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
