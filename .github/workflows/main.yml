@@ -24,7 +24,9 @@ jobs:
             -   name: test
                 inputs:
                     privateKey:
+                        description: 'privateKey'
                     knownHosts:
+                        description: 'knownHosts'
                 run:  |
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
                       echo ${{inputs.privateKey}}
