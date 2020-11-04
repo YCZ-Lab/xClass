@@ -15,22 +15,18 @@ jobs:
                 uses: actions/setup-java@v1
                 with:
                     java-version: 1.8
-                    privateKey:   ${{secrets.PRIVATEKEY}}
-                    knownHosts:   ${{secrets.KNOWNHOSTS}}
             #            -   name: Build with Maven
             #                run:  mvn -B package --file pom.xml
             #            -   name: check
             #                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
             -   name: test
-                inputs:
-                    privateKey:
-                        description: 'privateKey'
-                    knownHosts:
-                        description: 'knownHosts'
+                with:
+                    privateKey: ${{secrets.PRIVATEKEY}}
+                    knownHosts: ${{secrets.KNOWNHOSTS}}
                 run:  |
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                      echo ${{inputs.privateKey}}
-                      echo ${{inputs.knownHosts}}
+                      echo ${{privateKey}}
+                      echo ${{knownHosts}}
                       echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
 
