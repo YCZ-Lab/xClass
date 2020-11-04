@@ -31,11 +31,11 @@ jobs:
                       cat ~/.ssh/private.key
                       echo "============================================"
                       cat ~/.ssh/known_hosts
+                      ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
 
 
 
-#                      ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
 
 
