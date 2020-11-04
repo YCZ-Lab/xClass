@@ -28,12 +28,10 @@ jobs:
                       echo ${privateKey} > ~/.ssh/private.key
                       chmod 600 ~/.ssh/private.key
                       echo ${knownHosts} > ~/.ssh/known_hosts
-                      ls -al ~/.ssh/
-                      cat ~/.ssh/private.key
-                      echo "============================================"
-                      echo ">>>$privateKey<<<"
-                      echo ">>>$knownHosts<<<"
-                      cat ~/.ssh/known_hosts
+                      echo "ssh-keygen"
+                      ssh-keygen -y -e -f ~/.ssh/private.key
+                      echo "ssh-keyscan"
+                      ssh-keyscan 140.238.155.2
                       ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
 
