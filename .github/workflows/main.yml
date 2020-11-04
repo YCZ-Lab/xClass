@@ -18,6 +18,9 @@ jobs:
             -   name: Build with Maven
                 run:  mvn -B package --file pom.xml
             -   name: check
-                run:  ls -alh /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
+                run:  ls -al /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar
             -   name: test
-                run:  id
+                run:  |
+                      id
+                      pwd
+                      ssh root@xclass.highspeed.vip
