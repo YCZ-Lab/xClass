@@ -24,11 +24,14 @@ jobs:
                     privateKey: ${{secrets.PRIVATEKEY}}
                     knownHosts: ${{secrets.KNOWNHOSTS}}
                 run:  |
+                      mkdir -p ~/.ssh/
                       echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                      echo ${privateKey}
+                      echo ${privateKey} > ~/.ssh/private.key
                       echo "*******************************************************"
-                      echo ${knownHosts}
+                      echo ${knownHosts} > ~/.ssh/known_hosts
                       echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+                      ls -al ~/.ssh/
+                      cat > ~/.ssh/known_hosts
 
 
 
@@ -37,9 +40,7 @@ jobs:
 
 
 
-#                          mkdir -p ~/.ssh/
 #                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
-#                          ls -al ~/.ssh/
 
 #                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
 #                                        chmod 600 ~/.ssh/private.key
