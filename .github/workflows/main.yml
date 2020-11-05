@@ -28,10 +28,12 @@ jobs:
                     temp:       ${{secrets.TEMP}}
                 run:  |
                       mkdir -p ~/.ssh/
-                      echo "$host"
-                      ls -al "$temp"
-                      echo "$user"
+                      echo "$privateKey" > ~/.ssh/private.key
+                      chmod 600 ~/.ssh/private.key
+                      echo "$knownHosts" > ~/.ssh/known_hosts
+                      ls -al ~/.ssh/
                       ping $host -c 9
+                      ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
 
 
@@ -46,10 +48,6 @@ jobs:
 
 
 
-#                      ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
-#                      echo ${privateKey} > ~/.ssh/private.key
-#                      chmod 600 ~/.ssh/private.key
-#                      echo ${knownHosts} > ~/.ssh/known_hosts
 #                      echo "ssh-keygen"
 #                      ssh-keygen -y -e -f ~/.ssh/private.key
 #                      echo "ssh-keyscan"
