@@ -35,17 +35,6 @@ jobs:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #                      ping $host -c 9
 #                      echo "ssh-keygen"
 #                      ssh-keygen -y -e -f ~/.ssh/private.key
