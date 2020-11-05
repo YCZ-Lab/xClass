@@ -35,11 +35,6 @@ jobs:
 
 
 
-#                      ping $host -c 9
-#                      echo "ssh-keygen"
-#                      ssh-keygen -y -e -f ~/.ssh/private.key
-#                      echo "ssh-keyscan"
-#                      ssh-keyscan 140.238.155.2
 #                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
 
 #                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
