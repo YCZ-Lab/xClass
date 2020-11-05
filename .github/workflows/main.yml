@@ -16,7 +16,7 @@ jobs:
                 with:
                     java-version: 1.8
             -   name: Build with Maven
-                run: mvn -B package --file pom.xml
+                run:  mvn -B package --file pom.xml
             -   name: test
                 env:
                     privateKey: ${{secrets.PRIVATEKEY}}
@@ -30,8 +30,8 @@ jobs:
                       echo "$privateKey" > ~/.ssh/private.key
                       chmod 600 ~/.ssh/private.key
                       echo "$knownHosts" > ~/.ssh/known_hosts
-                      scp -P $port -i ~/.ssh/private.key /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar $user@$host:/xClass/app/
-                      ssh -p $port -i ~/.ssh/private.key $user@$host hostname;date
+                      scp -P $port -i ~/.ssh/private.key /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar $user@$host:$target
+                      ssh -p $port -i ~/.ssh/private.key $user@$host "/xClass/app/deply.sh >> /xClass/app/deply.log"
 
 
 
