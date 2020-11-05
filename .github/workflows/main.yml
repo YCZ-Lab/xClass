@@ -25,11 +25,12 @@ jobs:
                     knownHosts: ${{secrets.KNOWNHOSTS}}
                     host:       ${{secrets.HOST}}
                     user:       ${{secrets.USER}}
+                    temp:       ${{secrets.TEMP}}
                 run:  |
                       mkdir -p ~/.ssh/
                       echo "$host"
+                      ls -al "$temp"
                       echo "$user"
-                      cd $user
                       ping $host -c 9
 
 
@@ -45,23 +46,16 @@ jobs:
 
 
 
-                      #                          ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
+#                      ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
+#                      echo ${privateKey} > ~/.ssh/private.key
+#                      chmod 600 ~/.ssh/private.key
+#                      echo ${knownHosts} > ~/.ssh/known_hosts
+#                      echo "ssh-keygen"
+#                      ssh-keygen -y -e -f ~/.ssh/private.key
+#                      echo "ssh-keyscan"
+#                      ssh-keyscan 140.238.155.2
+#                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
 
-
-
-
-
-
-                      #                      echo ${privateKey} > ~/.ssh/private.key
-                      #                      chmod 600 ~/.ssh/private.key
-                      #                      echo ${knownHosts} > ~/.ssh/known_hosts
-                      #                      echo "ssh-keygen"
-                      #                      ssh-keygen -y -e -f ~/.ssh/private.key
-                      #                      echo "ssh-keyscan"
-                      #                      ssh-keyscan 140.238.155.2
-
-                      #                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
-
-                #                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
-                #    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
-                #    scp -P 50022 -i ./ycz.log -o "StrictHostKeyChecking no" ./ycz.log root@xclass.highspeed.vip:/tmp
+#                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
+#    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
+#    scp -P 50022 -i ./ycz.log -o "StrictHostKeyChecking no" ./ycz.log root@xclass.highspeed.vip:/tmp
