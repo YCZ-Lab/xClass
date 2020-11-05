@@ -29,6 +29,8 @@ jobs:
                       mkdir -p ~/.ssh/
                       echo "$host"
                       echo "$user"
+                      cd $user
+                      ping $host -c 9
 
 
 
