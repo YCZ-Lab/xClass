@@ -32,7 +32,6 @@ jobs:
                       chmod 600 ~/.ssh/private.key
                       echo "$knownHosts" > ~/.ssh/known_hosts
                       ls -al ~/.ssh/
-                      ping $host -c 9
                       ssh -p 50022 -i ~/.ssh/private.key root@xclass.highspeed.vip hostname
 
 
@@ -48,6 +47,7 @@ jobs:
 
 
 
+#                      ping $host -c 9
 #                      echo "ssh-keygen"
 #                      ssh-keygen -y -e -f ~/.ssh/private.key
 #                      echo "ssh-keyscan"
