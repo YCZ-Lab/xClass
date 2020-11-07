@@ -33,11 +33,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new Request(logsService));
-//                .excludePathPatterns("/css/**")
-//                .excludePathPatterns("/icon-fonts/**")
-//                .excludePathPatterns("/img/**")
-//                .excludePathPatterns("/js/**");
+        registry.addInterceptor(new Request(logsService))
+                .excludePathPatterns("/css/**")
+                .excludePathPatterns("/icon-fonts/**")
+                .excludePathPatterns("/img/**")
+                .excludePathPatterns("/js/**");
 //        registry.addInterceptor(new VerifyCodeRegister()).addPathPatterns("/register");
     }
 }

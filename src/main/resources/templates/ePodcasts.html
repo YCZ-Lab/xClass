@@ -40,7 +40,7 @@
     </a>
     <nav class="header-nav">
         <ul class="main-menu">
-            <li><a href="index.html" th:href="index" class="active">Home</a></li>
+            <li><a href="index.html" th:href="index">Home</a></li>
             <li>
                 <a href="jobs.html" th:href="jobs">Jobs</a>
                 <ul class="sub-menu">
@@ -55,7 +55,7 @@
                     <li><a href="fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
                 </ul>
             </li>
-            <li><a href="entrepreneurship.html" th:href="entrepreneurship">Entrepreneurship</a>
+            <li><a href="entrepreneurship.html" th:href="entrepreneurship" class="active">Entrepreneurship</a>
                 <ul class="sub-menu">
                     <li><a href="eArticles.html" th:href="eArticles">Articles</a></li>
                     <li><a href="eVideos.html" th:href="eVideos">Videos</a></li>
@@ -71,7 +71,7 @@
 
 <!-- Page top Section end -->
 <section class="page-top-section set-bg bg-danger" data-setbg="../static/img/page-top-bg/3.jpg"
-         th:style="|backgroud-image: url(@{img/page-top-bg/3.jpg});|">
+         th:background-image="@{'img/page-top-bg/3.jpg'}">
     <div class="container">
         <h2>Lessons</h2>
         <nav class="site-breadcrumb">
