@@ -32,13 +32,3 @@ jobs:
                       echo "$knownHosts" > ~/.ssh/known_hosts
                       scp -P $port -i ~/.ssh/private.key /home/runner/work/xClass/xClass/target/xclass-0.0.1-SNAPSHOT.jar $user@$host:$target
                       ssh -p $port -i ~/.ssh/private.key $user@$host "/xClass/app/deply.sh >> /xClass/app/deply.log"
-
-
-
-
-
-
-#                          echo ${{secrets.KNOWNHOSTS}} > ~/.ssh/known_hosts
-
-#                                        echo ${{secrets.PRIVATEKEY}} > ~/.ssh/private.key
-#    ssh -i ./ycz.log -p 50022 -o "StrictHostKeyChecking no" root@xclass.highspeed.vip hostname
