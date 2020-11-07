@@ -27,13 +27,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("eVideos").setViewName("eVideos");
         registry.addViewController("entrepreneurship").setViewName("ePodcasts");
         registry.addViewController("contact").setViewName("contact");
-        registry.addViewController("ysh").setViewName("ysh");
-        registry.addViewController("testIndex").setViewName("testIndex");
+//        registry.addViewController("ysh").setViewName("ysh");
+//        registry.addViewController("testIndex").setViewName("testIndex");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new Request(logsService)).excludePathPatterns("/lib/**");
+        registry.addInterceptor(new Request(logsService));
+//                .excludePathPatterns("/css/**")
+//                .excludePathPatterns("/icon-fonts/**")
+//                .excludePathPatterns("/img/**")
+//                .excludePathPatterns("/js/**");
 //        registry.addInterceptor(new VerifyCodeRegister()).addPathPatterns("/register");
     }
 }

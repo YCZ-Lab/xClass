@@ -19,7 +19,7 @@ public class VerifyCode extends GenericFilterBean {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-        if ("POST".equalsIgnoreCase(request.getMethod()) && defaultFilterProcessUrl.indexOf(request.getServletPath()) != -1) {
+        if ("POST".equalsIgnoreCase(request.getMethod()) && defaultFilterProcessUrl.contains(request.getServletPath())) {
             // 验证码验证
             String requestCaptcha = request.getParameter("verifyCode");
             String genCaptcha = (String) request.getSession().getAttribute("verifyCode");

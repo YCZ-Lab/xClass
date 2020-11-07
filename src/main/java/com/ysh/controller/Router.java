@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,7 +112,7 @@ public class Router {
     @GetMapping("/reply")
     public ModelAndView doReply(int topicID, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         if (size <= 0) {
-            size = 3 / 0;
+            size = 0;
         }
         this.size = size;
         int pages = replyService.getReplyPagesByTopicId(topicID, size);
@@ -161,7 +160,7 @@ public class Router {
     }
 
     @PostMapping("/register")
-    public ModelAndView saveUser(String userName, String password, String email, HttpServletResponse resp) {
+    public ModelAndView saveUser(String userName, String password, String email) {
         ModelAndView mv;
         User user = null;
         if (userName == null || userName.equals("")) {
@@ -173,6 +172,7 @@ public class Router {
         try {
             user = (User) userService.loadUserByUsername(userName);
         } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
         }
         if (user != null) {
             mv = new ModelAndView();

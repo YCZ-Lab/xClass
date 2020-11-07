@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 
 public class Request extends HandlerInterceptorAdapter {
-    private NamedThreadLocal<Long> time = new NamedThreadLocal<>("time");
+    private final NamedThreadLocal<Long> time = new NamedThreadLocal<>("time");
 
     final LogsService logsService;
 
@@ -21,6 +21,9 @@ public class Request extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+        if (req.getRequestURI().contains("static")) {
+            req.getRequestDispatcher(req.getRequestURI().replace("static", "")).forward(req, resp);
+        }
         time.set(System.currentTimeMillis());
         return true;
     }

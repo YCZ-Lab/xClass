@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dinero</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="??????">
+    <meta name="keywords" content="??????">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="../../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
+          rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
+    <link rel="stylesheet" href="../../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
+    <link rel="stylesheet" href="../../static/css/hover.css" th:href="@{css/hover.css}"/>
+    <link rel="stylesheet" href="../../static/css/video.css" th:href="@{css/video.css}"/>
+
+    <!-- Main Stylesheets -->
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{css/style.css}"/>
+
+</head>
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section -->
+<header class="header-section">
+    <a href="../index.html" th:href="index" class="site-logo">
+        <img src="../../static/img/logo.png" th:src="@{img/logo.png}" alt="">
+    </a>
+    <nav class="header-nav">
+        <ul class="main-menu">
+            <li><a href="../index.html" th:href="index" class="active">Home</a></li>
+            <li>
+                <a href="../jobs.html" th:href="jobs">Jobs</a>
+                <ul class="sub-menu">
+                    <li><a href="../topic.html" th:href="vTopic">Vancouver Forum</a></li>
+                    <li><a href="../topic.html" th:href="cTopic">California Forum</a></li>
+                </ul>
+            </li>
+            <li><a href="../finances.html" th:href="finances">Finance</a>
+                <ul class="sub-menu">
+                    <li><a href="../fArticles.html" th:href="fArticles">Articles</a></li>
+                    <li><a href="../fVideos.html" th:href="fVideos">Videos</a></li>
+                    <li><a href="../fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
+                </ul>
+            </li>
+            <li><a href="../entrepreneurship.html" th:href="entrepreneurship">Entrepreneurship</a>
+                <ul class="sub-menu">
+                    <li><a href="../eArticles.html" th:href="eArticles">Articles</a></li>
+                    <li><a href="../eVideos.html" th:href="eVideos">Videos</a></li>
+                    <li><a href="../ePodcasts.html" th:href="ePodcasts">Podcasts</a></li>
+                </ul>
+            </li>
+            <li><a href="../topic.html" th:href="forum">Forum</a></li>
+            <li><a href="../contact.html" th:href="contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+<!-- Header Section end -->
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hs-text">
+                    <h2>Are you a teen who wants to gain financial independence?</h2>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form class="hero-form" method="post" action="/register">
+                    <!--/*@thymesVar id="error" type="com.ysh.controller.Router"*/-->
+                    <h5 th:if="${error}" th:text="${error}" style="color: red"></h5>
+                    <input type="text" name="userName" placeholder="Your Name">
+                    <input type="password" name="password" placeholder="Your Password">
+                    <input type="text" name="email" placeholder="Your E-mail">
+                    <button class="site-btn">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hero-slider owl-carousel bg-danger">
+        <div class="hs-item set-bg" data-setbg="img/hero-slider/1.jpg"></div>
+        <div class="hs-item set-bg" data-setbg="img/hero-slider/2.jpg"></div>
+        <div class="hs-item set-bg" data-setbg="img/hero-slider/3.jpg"></div>
+    </div>
+</section>
+<!-- Hero Section end -->
+
+<!-- Why Section end -->
+<section class="why-section spad">
+    <div class="container">
+        <div class="text-center mb-5 pb-4">
+            <h2>Why Choose us?</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="icon-box-item">
+                    <div class="ib-icon">
+                        <i class="flaticon-012-24-hours"></i>
+                    </div>
+                    <div class="ib-text">
+                        <h5>Real Life Experience</h5>
+                        <p>Our teenage founders are financially independent and believe that all teenagers can replicate
+                            the system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="icon-box-item">
+                    <div class="ib-icon">
+                        <i class="flaticon-036-customer-service"></i>
+                    </div>
+                    <div class="ib-text">
+                        <h5>Credible Educators</h5>
+                        <p>We are collaborating with renowned educators to create credible and authentic content for our
+                            users.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="icon-box-item">
+                    <div class="ib-icon">
+                        <i class="flaticon-039-info"></i>
+                    </div>
+                    <div class="ib-text">
+                        <h5>Our Uniqueness</h5>
+                        <p>We focus on empirical knowledge that will help you embark on the financial independence
+                            journey instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center pt-3">
+            <a href="#" class="site-btn sb-big">Apply Now!</a>
+        </div>
+    </div>
+</section>
+<!-- Why Section end -->
+
+<!-- Feature Section -->
+<section class="feature-section spad">
+    <div class="container">
+        <div class="feature-item">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="../../static/img/feature-1.jpg" th:src="@{img/feature-1.jpg}" alt="">
+                </div>
+                <div class="col-lg-6">
+                    <div class="feature-text">
+                        <h2>Learn about Finance</h2>
+                        <p>Learning about finance will show teens how to identify the difference between cost and worth,
+                            how to create value,
+                            and how the future affects the current value of things. Additionally, figuring out how to
+                            take quantitative information
+                            and use it to tackle issues and settling on sound business choices is an important skill
+                            that can serve you throughout
+                            your life. This section includes Macro and Micro Economy, Basic Financial Literacy and
+                            Investment.
+                        </p>
+                        <a href="#" class="readmore">Sign up now </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="row">
+                <div class="col-lg-6 order-lg-2">
+                    <img src="../../static/img/feature-2.jpg" th:src="@{img/feature-2.jpg}" alt="">
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="feature-text">
+                        <h2>Learn about Entrepreneurship</h2>
+                        <p>Learning about entrepreneurship will help teens to cultivate unique skills and think
+                            innovatively.
+                            Information in this section will not only teach you important life skills but also the
+                            knowledge
+                            and mindset to launch real startups as entrepreneurial founders.
+                        </p>
+                        <a href="#" class="readmore">Sign up now </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Feature Section end -->
+
+<!-- Info Section -->
+<section class="info-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <img src="../../static/img/info-img.jpg" th:src="@{img/info-img.jpg}" alt="">
+            </div>
+            <div class="col-lg-7">
+                <div class="info-text">
+                    <h2>We’re here to help</h2>
+                    <p>Dinero is a platform designed to help teens to achieve financial independence through any of the
+                        possible 3 ways:
+                        taking the users on a pathway to a successful entrepreneur, introducing the users about
+                        investment techniques
+                        or helping them find teenage job opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Info Section end -->
+<div class="copyright text-center">
+    Copyright &copy;2020 All rights reserved to xClass.
+</div>
+
+
+<!--====== Javascripts & Jquery ======-->
+<script src="../../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
+<script src="../../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script src="../../static/js/jquery.slicknav.min.js" th:src="@{js/jquery.slicknav.min.js}"></script>
+<script src="../../static/js/owl.carousel.min.js" th:src="@{js/owl.carousel.min.js}"></script>
+<script src="../../static/js/circle-progress.min.js" th:src="@{js/circle-progress.min.js}"></script>
+<script src="../../static/js/jquery-ui.min.js" th:src="@{js/jquery-ui.min.js}"></script>
+<script src="../../static/js/main.js" th:src="@{js/main.js}"></script>
+
+
+</body>
+</html>
