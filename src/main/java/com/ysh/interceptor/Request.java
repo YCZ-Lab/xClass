@@ -21,9 +21,6 @@ public class Request extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-        if (req.getRequestURI().contains("static")) {
-            req.getRequestDispatcher(req.getRequestURI().replace("static", "")).forward(req, resp);
-        }
         time.set(System.currentTimeMillis());
         return true;
     }
