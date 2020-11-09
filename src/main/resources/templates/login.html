@@ -41,8 +41,8 @@
                 </div>
             </div>
             <div class="col-lg-6">
+                <!-- //////////////////////////////////////////////////////////////////////////////////-->
                 <form class="hero-form" method="post" action="/login">
-
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
@@ -71,11 +71,21 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <button class="btn btn-outline-success rounded-pill" style="min-width: 188px;" type="submit">
+                        <button class="btn btn-outline-success rounded-pill" style="min-width: 188px;"
+                                type="submit">
                             Login
                         </button>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn-outline-success rounded-pill px-2" href="" data-toggle="modal"
+                               data-dismiss="modal"
+                               data-target="#register">Register</a>
+                        </div>
+                    </div>
                 </form>
+                <!-- //////////////////////////////////////////////////////////////////////////////////-->
+
             </div>
         </div>
     </div>
@@ -91,6 +101,13 @@
 
 </section>
 <!-- Hero Section end -->
+
+<div th:replace="modular/components :: loginForm">
+</div>
+
+<div th:replace="modular/components :: registerForm">
+</div>
+
 
 <footer th:replace="modular/components :: footer">
 </footer>
