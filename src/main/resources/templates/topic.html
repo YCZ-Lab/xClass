@@ -60,29 +60,48 @@
                     <a href="reply.html" th:href="@{/reply(topicID=${topic.getId()})}" target="_blank"
                        class=" readmore">Read More </a>
                 </div>
-                <div class="site-pagination mb-2 row justify-content-center">
-                    <span th:each="i:${#numbers.sequence(1,pages)}">
-                    <a class="btn btn-outline-success rounded-pill" href="#"
-                       th:href="@{${#httpServletRequest.getRequestURI()}(page=${i},size=${size})}"
-                       th:classappend="${i}==${page} ? active : ''"
-                       th:text="${i}">1</a>
-                    </span>
+                <div class="site-pagination mt-n5 mb-5 row justify-content-center">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item mr-3" th:classappend="${page} == 1 ? 'disabled'">
+                                <a class="page-link btn btn-outline-success" href="#"
+                                   th:href="@{${#request.getRequestURI()}(page=${page}-1,size=${size})}">
+                                    <span>&laquo;</span>
+                                </a>
+                            </li>
+                            <span class="justify-content-center" th:each="i:${#numbers.sequence(1,pages)}">
+                                <li class="page-item mr-1">
+                                    <a class="btn btn-outline-success rounded-pill" href="#"
+                                       th:href="@{${#request.getRequestURI()}(page=${i},size=${size})}"
+                                       th:classappend="${i}==${page} ? active : ''"
+                                       th:text="${i}">1</a>
+                                </li>
+                            </span>
+                            <li class="page-item ml-3" th:classappend="${page} == ${pages} ? 'disabled'">
+                                <a class="page-link btn btn-outline-success" href="#"
+                                   th:href="@{${#request.getRequestURI()}(page=${page}+1,size=${size})}">
+                                    <span>&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-success w-100"></div>
-                </div>
+                <!--                <div class="progress mb-2" style="height: 5px;">-->
+                <!--                    <div class="progress-bar bg-success w-100"></div>-->
+                <!--                </div>-->
                 <div th:if="${logined}">
                     <form class="hero-form row justify-content-center" style="background: #f8f8f8" method="post"
                           action="/submit/topic">
                         <input type="text" name="title" placeholder="Title">
                         <textarea name="content" rows="12" placeholder="Content"></textarea>
                         <input type="hidden" name="region" th:value="${#httpServletRequest.getRequestURI()}">
-                        <button class="btn btn-outline-success rounded-pill" style="min-width: 188px;" type="submit">
+                        <button class="btn btn-outline-success rounded-pill mb-n2" style="min-width: 188px;"
+                                type="submit">
                             Send
                         </button>
                     </form>
                 </div>
-                <div th:if="!${logined}" class="row justify-content-center">
+                <div th:if="!${logined}" class="row justify-content-center my-3">
                     <a data-toggle="modal" data-target="#login" href="" class="btn btn-outline-success rounded-pill"
                        style="min-width: 188px;">Sign up</a>
                 </div>
