@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Dinero</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="??????">
-    <meta name="keywords" content="??????">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon -->
-    <link href="../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+<head th:replace="modular/components :: head(~{::title})">
 
+    <title>xClass - reply</title>
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
           rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
     <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
     <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
     <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
     <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
-
-    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
 
 </head>
+
 <body>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
+
+<header th:replace="modular/components :: navigationBar">
+</header>
+
+<section th:replace="modular/components :: pageTopSection('Reply','Home','Reply')">
+</section>
 
 <!-- Blog Section end -->
 <section class="blog-section spad">
@@ -191,10 +192,9 @@
     </div>
 </section>
 <!-- Blog Section end -->
-<div class="copyright text-center">
-    Copyright &copy;2020 All rights reserved to xClass.
-</div>
 
+<footer th:replace="modular/components :: footer">
+</footer>
 
 <!--====== Javascripts & Jquery ======-->
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>

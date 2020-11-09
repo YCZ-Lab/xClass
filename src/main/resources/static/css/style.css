@@ -634,7 +634,8 @@ Hero section
 }
 
 .hero-form {
-    background: #22242b;
+    /*background: #22242b;*/
+    background-color: rgba(34, 36, 43, 0.5);
     padding: 63px 42px 73px;
 }
 

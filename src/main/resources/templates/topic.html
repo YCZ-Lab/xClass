@@ -1,97 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Dinero</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="??????">
-    <meta name="keywords" content="??????">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon -->
-    <link href="../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+<head th:replace="modular/components :: head(~{::title})">
 
+    <title>xClass - topic</title>
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
           rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
     <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
     <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
     <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
     <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
-
-    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
 
 </head>
+
 <body>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
 
-<!-- Header Section -->
-<header class="header-section">
-    <a href="index.html" th:href="index" class="site-logo">
-        <img src="../static/img/logo.png" th:src="@{img/logo.png}" alt="">
-    </a>
-    <nav class="header-nav">
-        <ul class="main-menu">
-            <li><a href="index.html" th:href="index">Home</a></li>
-            <li>
-                <a href="jobs.html" th:href="jobs"
-                   th:class="${#httpServletRequest.getRequestURI()!='/forum'}?active:null">Jobs</a>
-                <ul class="sub-menu">
-                    <li><a href="topic.html" th:href="vTopic">Vancouver Forum</a></li>
-                    <li><a href="topic.html" th:href="cTopic">California Forum</a></li>
-                </ul>
-            </li>
-            <li><a href="finances.html" th:href="finances">Finance</a>
-                <ul class="sub-menu">
-                    <li><a href="fArticles.html" th:href="fArticles">Articles</a></li>
-                    <li><a href="fVideos.html" th:href="fVideos">Videos</a></li>
-                    <li><a href="fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="entrepreneurship.html" th:href="entrepreneurship">Entrepreneurship</a>
-                <ul class="sub-menu">
-                    <li><a href="eArticles.html" th:href="eArticles">Articles</a></li>
-                    <li><a href="eVideos.html" th:href="eVideos">Videos</a></li>
-                    <li><a href="ePodcasts.html" th:href="ePodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="topic.html" th:href="forum"
-                   th:class="${#httpServletRequest.getRequestURI()=='/forum'}?active:null">Forum</a></li>
-            <li><a href="contact.html" th:href="contact">Contact</a></li>
-        </ul>
-    </nav>
-
+<header th:replace="modular/components :: navigationBar">
 </header>
-<!-- Header Section end -->
 
-<!-- Page top Section end -->
-<section class="page-top-section set-bg bg-danger" data-setbg="../static/img/page-top-bg/3.jpg"
-         th:data-setbg="@{'img/page-top-bg/3.jpg'}">
-    <div class="container">
-        <h2>Forum</h2>
-        <nav class="site-breadcrumb">
-            <a class="sb-item" href="#">Home</a>
-            <span class="sb-item active">Forum</span>
-        </nav>
-    </div>
+<section th:replace="modular/components :: pageTopSection('Forum','Home','Forum')">
 </section>
-<!-- Page top Section end -->
 
-<!-- Blog Section end -->
-<section class="blog-section spad">
+<!-- Blog Section -->
+<section class="blog-section spad"
+         th:replace="modular/components :: section1(~{:://div[@class='col-lg-8' and @id='main']},_)">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div id="main" class="col-lg-8">
                 <!--********************************************************************************************-->
-                <div th:each="topic:${topics}" class="blog-post">
+                <div th:each="topic,stat:${topics}" class="blog-post">
                     <div th:text="${#dates.format(topic.getCreateDateTime(),'yyyy-MM-dd')}" class="blog-date">
                         1970-01-01
                     </div>
@@ -99,9 +49,11 @@
                     <div class="blog-metas">
                         <div th:text="${topic.getUserName()}" class="blog-meta">Temp</div>
                         <div class="blog-meta">on loan</div>
-                        <!--                        <div th:text="${topic.getReplyNums()} + ' comments'" class="blog-meta">0 comments</div>-->
-                        <span class="badge badge-pill badge-success"
-                              th:text="|${topic.getReplyNums()}|">99</span>
+                        <a href="reply.html" th:if="${topic.getReplyNums()}>0"
+                           th:href="@{/reply(topicID=${topic.getId()})}" target="_blank">
+                            <span class="badge badge-pill badge-success" th:text="${topic.getReplyNums()}">99</span>
+                        </a>
+                        <span class="badge badge-pill badge-success" th:if="${topic.getReplyNums()}==0">0</span>
                         <span class="blog-meta">comments</span>
                     </div>
                     <p th:text="${topic.getContent()}">Test Topic</p>
@@ -228,59 +180,12 @@
                 </div>
                 <!--********************************************************************************************-->
             </div>
-            <div class="col-lg-4 col-md-6 sidebar">
-                <div class="sb-widget">
-                    <form class="search-form">
-                        <label>
-                            <input type="text" placeholder="">
-                        </label>
-                        <button><img src="../static/img/search-icon.png" th:src="@{img/search-icon.png}" alt="">
-                        </button>
-                    </form>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <ul>
-                        <li><a href="#">Loans</a></li>
-                        <li><a href="#">Credit Cards</a></li>
-                        <li><a href="#">Investment</a></li>
-                        <li><a href="#">Entrepenurship</a></li>
-                    </ul>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <ul>
-                        <li><a href="#">April 2019</a></li>
-                        <li><a href="#">March 2019</a></li>
-                        <li><a href="#">February 2019</a></li>
-                        <li><a href="#">January 2019</a></li>
-                        <li><a href="#">December 2018</a></li>
-                    </ul>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <div class="tags">
-                        <a href="#">tips & triks</a>
-                        <a href="#">quick loans</a>
-                        <a href="#">tips</a>
-                        <a href="#">loans</a>
-                        <a href="#">investment</a>
-                        <a href="#">entrepenurship</a>
-                        <a href="#">credit & loans</a>
-                    </div>
-                </div>
-                <div class="sb-widget">
-                </div>
-            </div>
         </div>
     </div>
 </section>
-<!-- Blog Section end -->
 
-<div class="copyright text-center">
-    Copyright &copy;2020 All rights reserved to xClass.
-</div>
-
+<footer th:replace="modular/components :: footer">
+</footer>
 
 <!--====== Javascripts & Jquery ======-->
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>

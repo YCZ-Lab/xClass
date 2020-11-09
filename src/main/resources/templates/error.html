@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Error</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="??????">
-    <meta name="keywords" content="??????">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon -->
-    <link href="../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+<head th:replace="modular/components :: head(~{::title})">
 
+    <title>xClass - Error</title>
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
           rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
     <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
     <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
     <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
     <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
-
-    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
 
 </head>
+
 <body>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
+
+<header th:replace="modular/components :: navigationBar">
+</header>
+
+<section th:replace="modular/components :: pageTopSection('Error','Home','Error')">
+</section>
 
 <!-- Message Section -->
 <section class="blog-section spad">
@@ -39,45 +40,29 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="blog-post">
-                    <h1 class="blog-title">Error</h1>
+                    <h1 class="text-danger">Error</h1>
                     <hr>
-                    <table>
-                        <tr>
-                            <td>timestamp</td>
-                            <!--/*@thymesVar id="timestamp" type="com.ysh.controller.ErrorHandle"*/-->
-                            <td th:text="${timestamp}"></td>
-                        </tr>
-                        <tr>
-                            <td>status</td>
-                            <!--/*@thymesVar id="status" type="com.ysh.controller.ErrorHandle"*/-->
-                            <td th:text="${status}"></td>
-                        </tr>
-                        <tr>
-                            <td>error</td>
-                            <!--/*@thymesVar id="error" type="com.ysh.controller.ErrorHandle"*/-->
-                            <td th:text="${error}"></td>
-                        </tr>
-                        <tr>
-                            <td>message</td>
-                            <!--/*@thymesVar id="message" type="com.ysh.controller.ErrorHandle"*/-->
-                            <td th:text="${message}"></td>
-                        </tr>
-                        <tr>
-                            <td>path</td>
-                            <!--/*@thymesVar id="path" type="com.ysh.controller.ErrorHandle"*/-->
-                            <td th:text="${path}"></td>
-                        </tr>
-                    </table>
+                    <!--/*@thymesVar id="timestamp" type="com.ysh.controller.ErrorHandle"*/-->
+                    <h5 class="alert alert-danger" th:if="${timestamp}" th:text="|timestamp: ${timestamp}|">timestamp:
+                        ********</h5>
+                    <!--/*@thymesVar id="status" type="com.ysh.controller.ErrorHandle"*/-->
+                    <h5 class="alert alert-danger" th:if="${status}" th:text="|status: ${status}|">status: ********</h5>
+                    <!--/*@thymesVar id="error" type="com.ysh.controller.ErrorHandle"*/-->
+                    <h5 class="alert alert-danger" th:if="${error}" th:text="|error: ${error}|">error: ********</h5>
+                    <!--/*@thymesVar id="message" type="com.ysh.controller.ErrorHandle"*/-->
+                    <h5 class="alert alert-danger" th:if="${message}" th:text="|message: ${message}|">message:
+                        ********</h5>
+                    <!--/*@thymesVar id="path" type="com.ysh.controller.ErrorHandle"*/-->
+                    <h5 class="alert alert-danger" th:if="${path}" th:text="|path: ${path}|">path: ********</h5>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <!-- Message Section end -->
-<div class="copyright text-center">
-    Copyright &copy;2020 All rights reserved to xClass.
-</div>
 
+<footer th:replace="modular/components :: footer">
+</footer>
 
 <!--====== Javascripts & Jquery ======-->
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>

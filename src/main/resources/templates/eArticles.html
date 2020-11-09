@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Dinero</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="loans HTML Template">
-    <meta name="keywords" content="loans, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon -->
-    <link href="../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+<head th:replace="modular/components :: head(~{::title})">
+
+    <title>xClass - eArticles</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
@@ -16,83 +11,42 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
     <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
     <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
     <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
     <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
-
-    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
 
 </head>
+
 <body>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
 
-<!-- Header Section -->
-<header class="header-section">
-    <a href="index.html" th:href="index" class="site-logo">
-        <img src="../static/img/logo.png" th:src="@{img/logo.png}" alt="">
-    </a>
-    <nav class="header-nav">
-        <ul class="main-menu">
-            <li><a href="index.html" th:href="index">Home</a></li>
-            <li>
-                <a href="jobs.html" th:href="jobs">Jobs</a>
-                <ul class="sub-menu">
-                    <li><a href="topic.html" th:href="vTopic">Vancouver Forum</a></li>
-                    <li><a href="topic.html" th:href="cTopic">California Forum</a></li>
-                </ul>
-            </li>
-            <li><a href="finances.html" th:href="finances">Finance</a>
-                <ul class="sub-menu">
-                    <li><a href="fArticles.html" th:href="fArticles">Articles</a></li>
-                    <li><a href="fVideos.html" th:href="fVideos">Videos</a></li>
-                    <li><a href="fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="entrepreneurship.html" th:href="entrepreneurship" class="active">Entrepreneurship</a>
-                <ul class="sub-menu">
-                    <li><a href="eArticles.html" th:href="eArticles">Articles</a></li>
-                    <li><a href="eVideos.html" th:href="eVideos">Videos</a></li>
-                    <li><a href="ePodcasts.html" th:href="ePodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="topic.html" th:href="forum">Forum</a></li>
-            <li><a href="contact.html" th:href="contact">Contact</a></li>
-        </ul>
-    </nav>
+<header th:replace="modular/components :: navigationBar">
 </header>
-<!-- Header Section end -->
 
-<!-- Page top Section end -->
-<section class="page-top-section set-bg bg-danger" data-setbg="../static/img/page-top-bg/3.jpg"
-         th:data-setbg="@{'img/page-top-bg/3.jpg'}">
-    <div class="container">
-        <h2>Finance</h2>
-        <nav class="site-breadcrumb">
-            <a class="sb-item" href="#">Home</a>
-            <span class="sb-item active">Entrepreneurship / Articles</span>
-        </nav>
-    </div>
+<section th:replace="modular/components :: pageTopSection('Finance','Home','Entrepreneurship / Articles')">
 </section>
-<!-- Page top Section end -->
 
-<!-- Blog Section end -->
-<section class="blog-section spad">
+<!-- Blog Section -->
+<section class="blog-section spad"
+         th:replace="modular/components :: section1(~{:://div[@class='col-lg-8' and @id='main']},_)">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div id="main" class="col-lg-8">
                 <div class="blog-post">
                     <img src="../static/img/lessons/1.jpg" th:src="@{img/lessons/1.jpg}" alt="">
                     <div class="blog-date">Apr 08, 2019</div>
                     <h2 class="blog-title">How to apply for a good loan</h2>
                     <div class="blog-metas">
-                        <div class="blog-meta">By Mark Smith</div>
+                        <div class="blog-meta">By eArticles</div>
                         <div class="blog-meta">In Loans</div>
                         <div class="blog-meta"> 3 comments</div>
                     </div>
@@ -106,7 +60,7 @@
                     <div class="blog-date">Apr 08, 2019</div>
                     <h2 class="blog-title">Tips to improve your credit rate</h2>
                     <div class="blog-metas">
-                        <div class="blog-meta">By Mark Smith</div>
+                        <div class="blog-meta">By eArticles</div>
                         <div class="blog-meta">In Loans</div>
                         <div class="blog-meta"> 3 comments</div>
                     </div>
@@ -120,7 +74,7 @@
                     <div class="blog-date">Apr 08, 2019</div>
                     <h2 class="blog-title">10 ideas to spend your holliday </h2>
                     <div class="blog-metas">
-                        <div class="blog-meta">By Mark Smith</div>
+                        <div class="blog-meta">By eArticles</div>
                         <div class="blog-meta">In Loans</div>
                         <div class="blog-meta"> 3 comments</div>
                     </div>
@@ -130,51 +84,9 @@
                     <a href="#" class="readmore">Read More </a>
                 </div>
                 <div class="site-pagination">
-                    <a href="#" class="active">01.</a>
-                    <a href="#">02.</a>
-                    <a href="#">03</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 sidebar">
-                <div class="sb-widget">
-                    <form class="search-form">
-                        <label>
-                            <input type="text" placeholder="">
-                        </label>
-                        <button><img src="../static/img/search-icon.png" th:src="@{img/search-icon.png}" alt="">
-                        </button>
-                    </form>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <ul>
-                        <li><a href="#">Accounting</a></li>
-                        <li><a href="#">Credit Cards</a></li>
-                        <li><a href="#">Investment</a></li>
-                        <li><a href="#">Insurance</a></li>
-                    </ul>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <ul>
-                        <li><a href="#">April 2019</a></li>
-                        <li><a href="#">March 2019</a></li>
-                        <li><a href="#">February 2019</a></li>
-                        <li><a href="#">January 2019</a></li>
-                        <li><a href="#">December 2018</a></li>
-                    </ul>
-                </div>
-                <div class="sb-widget">
-                    <h2 class="sb-title">Categories</h2>
-                    <div class="tags">
-                        <a href="#">tips & triks</a>
-                        <a href="#">banking</a>
-                        <a href="#">personal finance</a>
-                        <a href="#">economics</a>
-                        <a href="#">credit</a>
-                    </div>
-                </div>
-                <div class="sb-widget">
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
                 </div>
             </div>
         </div>
@@ -182,11 +94,8 @@
 </section>
 <!-- Blog Section end -->
 
-<!-- Footer Section -->
-<div class="copyright text-center">
-    Copyright &copy;2020 All rights reserved to xClass.
-</div>
-
+<footer th:replace="modular/components :: footer">
+</footer>
 
 <!--====== Javascripts & Jquery ======-->
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
@@ -196,7 +105,6 @@
 <script src="../static/js/circle-progress.min.js" th:src="@{js/circle-progress.min.js}"></script>
 <script src="../static/js/jquery-ui.min.js" th:src="@{js/jquery-ui.min.js}"></script>
 <script src="../static/js/main.js" th:src="@{js/main.js}"></script>
-
 
 </body>
 </html>

@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Dinero</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="??????">
-    <meta name="keywords" content="??????">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head th:replace="modular/components :: head(~{::title})">
 
-    <!-- Favicon -->
-    <link href="../static/img/favicon.ico" th:href="@{img/favicon.ico}" rel="shortcut icon"/>
+    <title>xClass - contact</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
@@ -16,72 +10,28 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
     <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
     <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
     <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
     <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
     <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
-
-    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
 
 </head>
 <body>
+
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
 
-<!-- Header Section -->
-<header class="header-section">
-    <a href="index.html" th:href="index" class="site-logo">
-        <img src="../static/img/logo.png" th:src="@{img/logo.png}" alt="">
-    </a>
-    <nav class="header-nav">
-        <ul class="main-menu">
-            <li><a href="index.html" th:href="index">Home</a></li>
-            <li>
-                <a href="jobs.html" th:href="jobs">Jobs</a>
-                <ul class="sub-menu">
-                    <li><a href="topic.html" th:href="vTopic">Vancouver Forum</a></li>
-                    <li><a href="topic.html" th:href="cTopic">California Forum</a></li>
-                </ul>
-            </li>
-            <li><a href="finances.html" th:href="finances">Finance</a>
-                <ul class="sub-menu">
-                    <li><a href="fArticles.html" th:href="fArticles">Articles</a></li>
-                    <li><a href="fVideos.html" th:href="fVideos">Videos</a></li>
-                    <li><a href="fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="entrepreneurship.html" th:href="entrepreneurship">Entrepreneurship</a>
-                <ul class="sub-menu">
-                    <li><a href="eArticles.html" th:href="eArticles">Articles</a></li>
-                    <li><a href="eVideos.html" th:href="eVideos">Videos</a></li>
-                    <li><a href="ePodcasts.html" th:href="ePodcasts">Podcasts</a></li>
-                </ul>
-            </li>
-            <li><a href="topic.html" th:href="forum">Forum</a></li>
-            <li><a href="contact.html" th:href="contact" class="active">Contact</a></li>
-        </ul>
-    </nav>
+<header th:replace="modular/components :: navigationBar">
 </header>
-<!-- Header Section end -->
-<!--th:style="|backgroud-image: url(@{img/page-top-bg/4.jpg});|"-->
-<!--th:background-image="@{'img/page-top-bg/4.jpg'}"-->
-<!-- Page top Section end -->
-<section class="page-top-section set-bg bg-danger" data-setbg="../static/img/page-top-bg/4.jpg"
-         th:data-setbg="@{'img/page-top-bg/4.jpg'}">
-    <div class="container">
-        <h2>Contact</h2>
-        <nav class="site-breadcrumb">
-            <a class="sb-item" href="#">Home</a>
-            <span class="sb-item active">Contact</span>
-        </nav>
-    </div>
+
+<section th:replace="modular/components :: pageTopSection('Contact','Home','Contact')">
 </section>
-<!-- Page top Section end -->
 
 <!-- Contact Section end -->
 <section class="contact-section spad">
@@ -145,11 +95,8 @@
 </section>
 <!-- Contact Section end -->
 
-
-<div class="copyright text-center">
-    Copyright &copy;2020 All rights reserved to xClass.
-</div>
-
+<footer th:replace="modular/components :: footer">
+</footer>
 
 <!--====== Javascripts & Jquery ======-->
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
