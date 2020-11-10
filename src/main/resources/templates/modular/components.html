@@ -32,8 +32,9 @@
 <!-- Header Section -->
 <header class="header-section" th:fragment="navigationBar">
     <a href="../index.html" th:href="index" class="site-logo">
-        <img src="../../static/img/logo.png" th:src="@{img/logo.png}" alt="">
-        <button class="btn btn-outline-success ml-3 btn-sm"
+        <img class="d-none d-sm-none d-md-none d-lg-inline-block" src="../../static/img/logo.png" th:src="@{img/logo.png}"
+             alt="">
+        <button class="btn btn-outline-success ml-3 btn-sm d-md-none d-lg-inline-block"
                 th:text="${session.userName} ? ${session.userName} : 'Welcome'" style="min-width: 120px;">
             Welcome
         </button>
@@ -203,13 +204,13 @@
 <div class="container">
     <div class="row text-center">
         <div class="col">
-            <button class="btn btn-outline-primary rounded-pill py-0" href="" data-toggle="modal"
+            <button class="btn btn-outline-success rounded-pill py-0" href="" data-toggle="modal"
                     data-dismiss="modal"
                     data-target="#login">Login
             </button>
         </div>
         <div class="col">
-            <button class="btn btn-outline-primary rounded-pill py-0" href="" data-toggle="modal"
+            <button class="btn btn-outline-danger rounded-pill py-0" href="" data-toggle="modal"
                     data-dismiss="modal"
                     data-target="#register">Register
             </button>
@@ -256,7 +257,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button class="btn btn-outline-primary rounded-pill py-0" type="submit">submit
+                        <button class="btn btn-outline-success rounded-pill py-0 mr-2" type="submit">submit
                         </button>
                         <button class="btn btn-outline-danger rounded-pill py-0" data-dismiss="modal">
                             cancel
@@ -269,7 +270,6 @@
     </div>
 </div>
 <!-- Login Form end -->
-
 
 <!-- Register Form -->
 <div id="register" class="modal fade" tabindex="-1" th:fragment="registerForm">
@@ -317,7 +317,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button class="btn btn-outline-primary rounded-pill py-0" type="submit">submit
+                        <button class="btn btn-outline-success rounded-pill py-0 mr-2" type="submit">submit
                         </button>
                         <button class="btn btn-outline-danger rounded-pill py-0" data-dismiss="modal">
                             cancel
