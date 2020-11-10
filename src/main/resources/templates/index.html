@@ -42,12 +42,12 @@
             </div>
             <div class="col-lg-6">
                 <form class="hero-form" method="post" action="/login"
-                      th:remove="${session.logined == null} ? none : all">
+                      th:remove="${session.userName == null} ? none : all">
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
-                                th:unless="${#httpServletRequest.getParameter('error') == null}"
-                                th:text="${#httpServletRequest.getParameter('error')}">Error</h5>
+                                th:unless="${param.error == null}"
+                                th:text="${param.error}">Error</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -146,7 +146,9 @@
             </div>
         </div>
         <div class="text-center pt-3">
-            <a href="#" class="site-btn sb-big">Apply Now!</a>
+            <button href="#" class="btn btn-lg btn-outline-success rounded-pill mb-n2" style="min-width: 257px;">Apply
+                Now!
+            </button>
         </div>
     </div>
 </section>
