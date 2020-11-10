@@ -48,7 +48,6 @@
                     <div class="blog-metas">
                         <div th:text="${topic.getUserName()}" class="blog-meta">Temp</div>
                         <div class="blog-meta">on loan</div>
-                        <!--                        <div th:text="|${topic.getReplyNums()} comments|" class="blog-meta">0 comments</div>-->
                         <span class="badge badge-pill badge-success"
                               th:text="|${topic.getReplyNums()}|">99</span>
                         <span class="blog-meta">comments</span>
@@ -69,12 +68,12 @@
     1*1 1*2 1*3
                     </pre>
                 </div>
-                <div class="site-pagination mt-n5 mb-5 row justify-content-center">
+                <div class="site-pagination mb-5 row justify-content-center">
                     <nav>
                         <ul class="pagination">
                             <li class="page-item mr-3" th:classappend="${page} == 1 ? 'disabled'">
                                 <a class="page-link btn btn-outline-success" href="#"
-                                   th:href="@{${#request.getRequestURI()}(page=${page}-1,size=${size})}">
+                                   th:href="@{/reply(topicID=${topic.getId()},page=${page}-1,size=${size})}">
                                     <span>&laquo;</span>
                                 </a>
                             </li>
@@ -88,7 +87,7 @@
                             </span>
                             <li class="page-item ml-3" th:classappend="${page} == ${pages} ? 'disabled'">
                                 <a class="page-link btn btn-outline-success" href="#"
-                                   th:href="@{${#request.getRequestURI()}(page=${page}+1,size=${size})}">
+                                   th:href="@{/reply(topicID=${topic.getId()},page=${page}+1,size=${size})}">
                                     <span>&raquo;</span>
                                 </a>
                             </li>
@@ -98,7 +97,7 @@
                 <!--                <div class="progress mb-2" style="height: 5px;">-->
                 <!--                    <div class="progress-bar bg-success w-100"></div>-->
                 <!--                </div>-->
-                <div th:if="${logined}">
+                <div th:if="${session.logined}">
                     <form class="hero-form row justify-content-center" style="background: #f8f8f8" method="post"
                           action="/submit/reply">
                         <input type="hidden" name="topicID" th:value="${topic.getId()}">
@@ -109,7 +108,7 @@
                         </button>
                     </form>
                 </div>
-                <div th:if="!${logined}" class="row row justify-content-center my-3">
+                <div th:if="!${session.logined}" class="row row justify-content-center my-3">
                     <a data-toggle="modal" data-target="#login" href="" class="btn btn-outline-success rounded-pill"
                        style="min-width: 188px;">Sign up</a>
                 </div>

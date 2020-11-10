@@ -46,8 +46,8 @@
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
-                                th:unless="${#httpServletRequest.getParameter('error') == null}"
-                                th:text="${#httpServletRequest.getParameter('error')}">Error</h5>
+                                th:unless="${param.error == null}"
+                                th:text="${param.error}">Error</h5>
                         </div>
                     </div>
                     <div class="row">

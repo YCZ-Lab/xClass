@@ -60,11 +60,11 @@ public class Router {
         mv.addObject("pages", pages);
         mv.addObject("page", page);
         mv.addObject("size", size);
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            mv.addObject("logined", "false");
-        } else {
-            mv.addObject("logined", "true");
-        }
+//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+//            mv.addObject("logined", "false");
+//        } else {
+//            mv.addObject("logined", "true");
+//        }
         mv.setViewName("topic");
         return mv;
     }
@@ -99,7 +99,7 @@ public class Router {
 
     @GetMapping("/vTopic")
     public ModelAndView doVTopic(@RequestParam(defaultValue = "1") int page,
-                         @RequestParam(defaultValue = "3") int size) {
+                                 @RequestParam(defaultValue = "3") int size) {
         return doTopic(page, size, "vancouver");
     }
 
@@ -134,11 +134,11 @@ public class Router {
         mv.addObject("pages", pages);
         mv.addObject("page", page);
         mv.addObject("size", size);
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            mv.addObject("logined", "false");
-        } else {
-            mv.addObject("logined", "true");
-        }
+//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+//            mv.addObject("logined", "false");
+//        } else {
+//            mv.addObject("logined", "true");
+//        }
         mv.setViewName("reply");
         return mv;
     }
