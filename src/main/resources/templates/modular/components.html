@@ -32,10 +32,10 @@
 <!-- Header Section -->
 <header class="header-section" th:fragment="navigationBar">
     <a href="/logout" th:href="logout" class="site-logo">
-        <img class="d-none d-sm-none d-md-none d-lg-inline-block" src="../../static/img/logo.png"
+        <img class="d-sm-inline-block d-md-inline-block d-lg-inline-block" src="../../static/img/logo.png"
              th:src="@{img/logo.png}"
              alt="">
-        <button class="btn btn-outline-success ml-3 btn-sm d-md-none d-lg-inline-block"
+        <button class="btn btn-outline-success ml-3 btn-sm d-none d-sm-inline-block d-md-inline-block d-lg-inline-block"
                 th:text="${session.userName} ? ${session.userName} : 'Welcome'" title="Sign out"
                 style="min-width: 120px;">
             Welcome
