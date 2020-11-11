@@ -31,11 +31,13 @@
 
 <!-- Header Section -->
 <header class="header-section" th:fragment="navigationBar">
-    <a href="../index.html" th:href="index" class="site-logo">
-        <img class="d-none d-sm-none d-md-none d-lg-inline-block" src="../../static/img/logo.png" th:src="@{img/logo.png}"
+    <a href="/logout" th:href="logout" class="site-logo">
+        <img class="d-none d-sm-none d-md-none d-lg-inline-block" src="../../static/img/logo.png"
+             th:src="@{img/logo.png}"
              alt="">
         <button class="btn btn-outline-success ml-3 btn-sm d-md-none d-lg-inline-block"
-                th:text="${session.userName} ? ${session.userName} : 'Welcome'" style="min-width: 120px;">
+                th:text="${session.userName} ? ${session.userName} : 'Welcome'" title="Sign out"
+                style="min-width: 120px;">
             Welcome
         </button>
     </a>
@@ -52,7 +54,7 @@
                     <li><a href="../topic.html" th:href="cTopic">California Forum</a></li>
                 </ul>
             </li>
-            <li><a href="../finances.html" th:href="finances"
+            <li><a href="../temp/finances.html" th:href="finances"
                    th:classappend="${#request.getRequestURI()=='/finances' or #request.getRequestURI()=='/fArticles' or #request.getRequestURI()=='/fVideos' or #request.getRequestURI()=='/fPodcasts'}?active:null">Finance</a>
                 <ul class="sub-menu">
                     <li><a href="../fArticles.html" th:href="fArticles">Articles</a></li>
@@ -60,7 +62,7 @@
                     <li><a href="../fPodcasts.html" th:href="fPodcasts">Podcasts</a></li>
                 </ul>
             </li>
-            <li><a href="../entrepreneurship.html" th:href="entrepreneurship"
+            <li><a href="../temp/entrepreneurship.html" th:href="entrepreneurship"
                    th:classappend="${#request.getRequestURI()=='/entrepreneurship' or #request.getRequestURI()=='/eArticles' or #request.getRequestURI()=='/eVideos' or #request.getRequestURI()=='/ePodcasts'}?active:null">Entrepreneurship</a>
                 <ul class="sub-menu">
                     <li><a href="../eArticles.html" th:href="eArticles">Articles</a></li>
@@ -256,6 +258,14 @@
                                  style="cursor:pointer" alt=""/>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col custom-control custom-switch ml-3">
+                            <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me"
+                                   checked>
+                            <label class="custom-control-label text-dark" for="remember-me"><small>Remember
+                                Me</small></label>
+                        </div>
+                    </div>
                     <div class="text-right">
                         <button class="btn btn-outline-success rounded-pill py-0 mr-2" type="submit">submit
                         </button>
@@ -263,7 +273,9 @@
                             cancel
                         </button>
                     </div>
-                    <a href="" data-toggle="modal" data-dismiss="modal" data-target="#register">click me to sign up</a>
+                    <a href="" class="text-success" data-toggle="modal" data-dismiss="modal"
+                       data-target="#register"><small>click
+                        me to sign up</small></a>
                 </form>
             </div>
         </div>
@@ -323,8 +335,8 @@
                             cancel
                         </button>
                     </div>
-                    <a href="" data-toggle="modal" data-dismiss="modal"
-                       data-target="#login">click me to login</a>
+                    <a href="" class="text-success" data-toggle="modal" data-dismiss="modal"
+                       data-target="#login"><small>click me to login</small></a>
                 </form>
             </div>
         </div>

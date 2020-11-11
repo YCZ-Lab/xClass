@@ -67,7 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("name")
                 .passwordParameter("password")
                 .successHandler((req, resp, auth) -> {
-                    req.getSession().setAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
                     String referer = req.getHeader("referer");
                     if (referer.contains("login")) {
                         resp.sendRedirect("/index");
@@ -90,6 +89,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                     resp.sendRedirect("/login?error=" + error);
                 })
+                .and()
+                .rememberMe()
+                .key("xClass")
                 .and()
                 .logout()
                 .logoutUrl("/logout")

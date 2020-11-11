@@ -22,54 +22,11 @@
 </head>
 
 <body>
-<ul class="nav nav-tabs" id="myTab">
-    <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#login">Login</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#register">Register</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="login">Login</div>
-    <div class="tab-pane fade" id="register">Register</div>
-</div>
-<hr>
 
-<form class="hero-form" method="post" action="/login">
-    <div class="row">
-        <div class="col">
-            <h5 class="alert alert-danger text-center"
-                th:unless="${#httpServletRequest.getParameter('error') == null}"
-                th:text="${#httpServletRequest.getParameter('error')}">Error</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <input class="rounded-pill" type="text" name="name" placeholder="Username" required
-                   autofocus>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <input class="rounded-pill" type="password" name="password" placeholder="Password">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-8">
-            <input class="rounded-pill" type="text" name="verifyCode" placeholder="Verify Code">
-        </div>
-        <div class="col-4">
-            <img class="rounded-pill" src="/verifyCode" onclick="this.src='/verifyCode'"
-                 style="cursor:pointer" alt="Verify Code"/>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <button class="btn btn-outline-success rounded-pill" style="min-width: 188px;" type="submit">
-            Login
-        </button>
-    </div>
-</form>
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+    <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+</div>
 
 <footer th:replace="modular/components :: footer">
 </footer>

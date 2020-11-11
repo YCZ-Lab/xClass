@@ -7,7 +7,6 @@ import com.ysh.service.ReplyService;
 import com.ysh.service.TopicService;
 import com.ysh.service.UserService;
 import com.ysh.utils.VerifyCode;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,7 +42,7 @@ public class Router {
                                 @RequestParam(defaultValue = "3") int size,
                                 @RequestParam(defaultValue = "general") String region) {
         if (size <= 0) {
-            size = 3;
+            size = 0;
         }
         this.size = size;
         int pages = topicService.getTopicPages(size, region);
@@ -112,7 +111,7 @@ public class Router {
     @GetMapping("/reply")
     public ModelAndView doReply(int topicID, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "3") int size) {
         if (size <= 0) {
-            size = 0;
+            size = 3 / 0;
         }
         this.size = size;
         int pages = replyService.getReplyPagesByTopicId(topicID, size);
@@ -204,4 +203,81 @@ public class Router {
         VerifyCode.output(image, resp.getOutputStream());
     }
 
+    @GetMapping("/login")
+    public ModelAndView login() {
+        ModelAndView mv = new ModelAndView("login");
+        return mv;
+    }
+
+    @GetMapping("/")
+    public ModelAndView root() {
+        ModelAndView mv = new ModelAndView("index");
+        return mv;
+    }
+
+    @GetMapping("/index")
+    public ModelAndView index() {
+        ModelAndView mv = new ModelAndView("index");
+        return mv;
+    }
+
+    @GetMapping("/jobs")
+    public ModelAndView jobs() {
+        ModelAndView mv = new ModelAndView("jobs");
+        return mv;
+    }
+
+    @GetMapping("/finances")
+    public ModelAndView finances() {
+        ModelAndView mv = new ModelAndView("fPodcasts");
+        return mv;
+    }
+
+    @GetMapping("/fArticles")
+    public ModelAndView fArticles() {
+        ModelAndView mv = new ModelAndView("fArticles");
+        return mv;
+    }
+
+    @GetMapping("/fVideos")
+    public ModelAndView fVideos() {
+        ModelAndView mv = new ModelAndView("fVideos");
+        return mv;
+    }
+
+    @GetMapping("/fPodcasts")
+    public ModelAndView fPodcasts() {
+        ModelAndView mv = new ModelAndView("fPodcasts");
+        return mv;
+    }
+
+    @GetMapping("/entrepreneurship")
+    public ModelAndView entrepreneurship() {
+        ModelAndView mv = new ModelAndView("ePodcasts");
+        return mv;
+    }
+
+    @GetMapping("/eArticles")
+    public ModelAndView eArticles() {
+        ModelAndView mv = new ModelAndView("eArticles");
+        return mv;
+    }
+
+    @GetMapping("/eVideos")
+    public ModelAndView eVideos() {
+        ModelAndView mv = new ModelAndView("eVideos");
+        return mv;
+    }
+
+    @GetMapping("/ePodcasts")
+    public ModelAndView ePodcasts() {
+        ModelAndView mv = new ModelAndView("ePodcasts");
+        return mv;
+    }
+
+    @GetMapping("/contact")
+    public ModelAndView contact() {
+        ModelAndView mv = new ModelAndView("contact");
+        return mv;
+    }
 }
