@@ -4,6 +4,7 @@ import com.ysh.filter.VerifyCode;
 import com.ysh.model.User;
 import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -90,6 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole("admin")
                 .antMatchers("/submit/**")
                 .hasRole("user")
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("admin")
                 .anyRequest()
                 .permitAll()
                 .and()
@@ -108,6 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .failureHandler((req, resp, e) -> {
+                    System.out.println("==> " + e);
                     String error = "Unknown Error !!!";
                     if (e instanceof LockedException) {
                         error = "Account Locked !!!";
