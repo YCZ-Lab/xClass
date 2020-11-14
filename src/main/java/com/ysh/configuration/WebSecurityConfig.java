@@ -1,10 +1,9 @@
 package com.ysh.configuration;
 
 import com.ysh.filter.VerifyCode;
-import com.ysh.model.User;
+import com.ysh.service.RememberMeTokenRepositoryService;
 import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.util.ReflectionUtils;
 
@@ -39,9 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     final UserService userService;
     final VerifyCode verifyCode;
 
-    public WebSecurityConfig(UserService userService, VerifyCode verifyCode) {
+    final RememberMeTokenRepositoryService rememberMeTokenRepositoryService;
+
+    public WebSecurityConfig(UserService userService, VerifyCode verifyCode, RememberMeTokenRepositoryService rememberMeTokenRepositoryService) {
         this.userService = userService;
         this.verifyCode = verifyCode;
+        this.rememberMeTokenRepositoryService = rememberMeTokenRepositoryService;
     }
 
     @Bean
@@ -63,35 +64,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
         http.addFilterBefore(verifyCode, UsernamePasswordAuthenticationFilter.class);
-        http.rememberMe().key("xClass").addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
-            @Override
-            public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
-
-                RememberMeAuthenticationFilter newFilter = new RememberMeAuthenticationFilter(
-                        (AuthenticationManager) getByReflection(object, "authenticationManager"),
-                        (RememberMeServices) getByReflection(object, "rememberMeServices")
-                ) {
+        http.rememberMe().key("xClass").tokenRepository(rememberMeTokenRepositoryService)
+                .addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
                     @Override
-                    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
-                        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                        request.getSession().setAttribute("userName", auth.getName());
-                    }
-                };
-                return (O) newFilter;
-            }
+                    public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
 
-            private <O extends RememberMeAuthenticationFilter> Object getByReflection(O object, String name) {
-                Field field = ReflectionUtils.findField(object.getClass(), name);
-                ReflectionUtils.makeAccessible(field);
-                return ReflectionUtils.getField(field, object);
-            }
-        });
+                        RememberMeAuthenticationFilter newFilter = new RememberMeAuthenticationFilter(
+                                (AuthenticationManager) getByReflection(object, "authenticationManager"),
+                                (RememberMeServices) getByReflection(object, "rememberMeServices")
+                        ) {
+                            @Override
+                            protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
+                                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                                request.getSession().setAttribute("userName", auth.getName());
+                            }
+                        };
+                        return (O) newFilter;
+                    }
+
+                    private <O extends RememberMeAuthenticationFilter> Object getByReflection(O object, String name) {
+                        Field field = ReflectionUtils.findField(object.getClass(), name);
+                        ReflectionUtils.makeAccessible(field);
+                        return ReflectionUtils.getField(field, object);
+                    }
+                });
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
                 .antMatchers("/submit/**")
                 .hasRole("user")
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("admin")
+//                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("admin")
+                .antMatchers("/monitor/**")
+                .hasRole("admin")
+//                .antMatchers("/monitor/**").fullyAuthenticated()
                 .anyRequest()
                 .permitAll()
                 .and()

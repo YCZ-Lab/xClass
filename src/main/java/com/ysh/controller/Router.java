@@ -203,81 +203,81 @@ public class Router {
         VerifyCode.output(image, resp.getOutputStream());
     }
 
-    @GetMapping("/login")
-    public ModelAndView login() {
-        ModelAndView mv = new ModelAndView("login");
-        return mv;
-    }
-
-    @GetMapping("/")
-    public ModelAndView root() {
-        ModelAndView mv = new ModelAndView("index");
-        return mv;
-    }
-
-    @GetMapping("/index")
-    public ModelAndView index() {
-        ModelAndView mv = new ModelAndView("index");
-        return mv;
-    }
-
-    @GetMapping("/jobs")
-    public ModelAndView jobs() {
-        ModelAndView mv = new ModelAndView("jobs");
-        return mv;
-    }
-
-    @GetMapping("/finances")
-    public ModelAndView finances() {
-        ModelAndView mv = new ModelAndView("fPodcasts");
-        return mv;
-    }
-
-    @GetMapping("/fArticles")
-    public ModelAndView fArticles() {
-        ModelAndView mv = new ModelAndView("fArticles");
-        return mv;
-    }
-
-    @GetMapping("/fVideos")
-    public ModelAndView fVideos() {
-        ModelAndView mv = new ModelAndView("fVideos");
-        return mv;
-    }
-
-    @GetMapping("/fPodcasts")
-    public ModelAndView fPodcasts() {
-        ModelAndView mv = new ModelAndView("fPodcasts");
-        return mv;
-    }
-
-    @GetMapping("/entrepreneurship")
-    public ModelAndView entrepreneurship() {
-        ModelAndView mv = new ModelAndView("ePodcasts");
-        return mv;
-    }
-
-    @GetMapping("/eArticles")
-    public ModelAndView eArticles() {
-        ModelAndView mv = new ModelAndView("eArticles");
-        return mv;
-    }
-
-    @GetMapping("/eVideos")
-    public ModelAndView eVideos() {
-        ModelAndView mv = new ModelAndView("eVideos");
-        return mv;
-    }
-
-    @GetMapping("/ePodcasts")
-    public ModelAndView ePodcasts() {
-        ModelAndView mv = new ModelAndView("ePodcasts");
-        return mv;
-    }
-
-    @GetMapping("/contact")
-    public ModelAndView contact() {
-        ModelAndView mv = new ModelAndView("contact");
-        return mv;
-    }
+//    @GetMapping("/login")
+//    public ModelAndView login() {
+//        ModelAndView mv = new ModelAndView("login");
+//        return mv;
+//    }
+//
+//    @GetMapping("/")
+//    public ModelAndView root() {
+//        ModelAndView mv = new ModelAndView("index");
+//        return mv;
+//    }
+//
+//    @GetMapping("/index")
+//    public ModelAndView index() {
+//        ModelAndView mv = new ModelAndView("index");
+//        return mv;
+//    }
+//
+//    @GetMapping("/jobs")
+//    public ModelAndView jobs() {
+//        ModelAndView mv = new ModelAndView("jobs");
+//        return mv;
+//    }
+//
+//    @GetMapping("/finances")
+//    public ModelAndView finances() {
+//        ModelAndView mv = new ModelAndView("fPodcasts");
+//        return mv;
+//    }
+//
+//    @GetMapping("/fArticles")
+//    public ModelAndView fArticles() {
+//        ModelAndView mv = new ModelAndView("fArticles");
+//        return mv;
+//    }
+//
+//    @GetMapping("/fVideos")
+//    public ModelAndView fVideos() {
+//        ModelAndView mv = new ModelAndView("fVideos");
+//        return mv;
+//    }
+//
+//    @GetMapping("/fPodcasts")
+//    public ModelAndView fPodcasts() {
+//        ModelAndView mv = new ModelAndView("fPodcasts");
+//        return mv;
+//    }
+//
+//    @GetMapping("/entrepreneurship")
+//    public ModelAndView entrepreneurship() {
+//        ModelAndView mv = new ModelAndView("ePodcasts");
+//        return mv;
+//    }
+//
+//    @GetMapping("/eArticles")
+//    public ModelAndView eArticles() {
+//        ModelAndView mv = new ModelAndView("eArticles");
+//        return mv;
+//    }
+//
+//    @GetMapping("/eVideos")
+//    public ModelAndView eVideos() {
+//        ModelAndView mv = new ModelAndView("eVideos");
+//        return mv;
+//    }
+//
+//    @GetMapping("/ePodcasts")
+//    public ModelAndView ePodcasts() {
+//        ModelAndView mv = new ModelAndView("ePodcasts");
+//        return mv;
+//    }
+//
+//    @GetMapping("/contact")
+//    public ModelAndView contact() {
+//        ModelAndView mv = new ModelAndView("contact");
+//        return mv;
+//    }
 }
