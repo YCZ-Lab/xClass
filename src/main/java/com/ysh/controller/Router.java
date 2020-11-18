@@ -173,12 +173,13 @@ public class Router {
         } catch (UsernameNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println(user);
         if (user != null) {
             mv = new ModelAndView();
-            mv.addObject("error", user.getUserName() + "username already exist!");
+            mv.addObject("error", user.getUserName() + " username already exist!");
             mv.setViewName("index");
         } else {
-            mv = new ModelAndView("redirect:/login");
+            mv = new ModelAndView("redirect:/loginPage");
             User newUser = new User();
             newUser.setUserName(userName);
             newUser.setPassword(new BCryptPasswordEncoder(12).encode(password));

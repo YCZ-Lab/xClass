@@ -52,6 +52,13 @@
                     </div>
                     <div class="row">
                         <div class="col">
+                            <h5 class="alert alert-danger text-center"
+                                th:unless="${error} == null"
+                                th:text="${error}">Error</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
                             <input class="rounded-pill" type="text" name="name" placeholder="Username" required
                                    autofocus>
                         </div>

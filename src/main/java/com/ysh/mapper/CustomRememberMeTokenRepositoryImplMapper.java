@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
 import java.util.Date;
 
 @Mapper
-public interface RememberMeTokenRepositoryMapper {
+public interface CustomRememberMeTokenRepositoryImplMapper {
 
     @Insert("insert into rememberme_token(username,series,tokenValue,last_login) values(#{username},#{series},#{tokenValue},#{date})")
     void createNewToken(PersistentRememberMeToken token);

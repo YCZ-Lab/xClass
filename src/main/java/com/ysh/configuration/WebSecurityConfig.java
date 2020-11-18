@@ -1,13 +1,11 @@
 package com.ysh.configuration;
 
-import com.ysh.filter.VerifyCode;
-import com.ysh.service.RememberMeTokenRepositoryService;
+import com.ysh.filter.CustomUsernamePasswordAuthenticationFilter;
+import com.ysh.service.CustomRememberMeTokenRepositoryImpl;
 import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -35,14 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private int httpPort;
 
     final UserService userService;
-    final VerifyCode verifyCode;
+    final RememberMeServices persistentTokenBasedRememberMeServices;
+    final CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl;
 
-    final RememberMeTokenRepositoryService rememberMeTokenRepositoryService;
-
-    public WebSecurityConfig(UserService userService, VerifyCode verifyCode, RememberMeTokenRepositoryService rememberMeTokenRepositoryService) {
+    public WebSecurityConfig(UserService userService, RememberMeServices rememberMeServices, CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl) {
         this.userService = userService;
-        this.verifyCode = verifyCode;
-        this.rememberMeTokenRepositoryService = rememberMeTokenRepositoryService;
+        this.persistentTokenBasedRememberMeServices = rememberMeServices;
+        this.customRememberMeTokenRepositoryImpl = customRememberMeTokenRepositoryImpl;
+
     }
 
     @Bean
@@ -52,10 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("YCZ").password("770519").roles("admin")
-//                .and()
-//                .withUser("YSH").password("050406").roles("user");
         auth.userDetailsService(userService);
     }
 
@@ -63,8 +57,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
-        http.addFilterBefore(verifyCode, UsernamePasswordAuthenticationFilter.class);
-        http.rememberMe().key("xClass").tokenRepository(rememberMeTokenRepositoryService)
+        http.addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAt(new RememberMeAuthenticationFilter(authenticationManagerBean(), rememberMeServices), RememberMeAuthenticationFilter.class);
+        //以下代码会注册一个匿名的RememberMeAuthenticationFilter
+        http.rememberMe()
+                .key("xClass")
+                .tokenRepository(customRememberMeTokenRepositoryImpl)
                 .addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
                     @Override
                     public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
@@ -100,39 +98,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("name")
-                .passwordParameter("password")
-                .successHandler((req, resp, auth) -> {
-                    req.getSession().setAttribute("userName", auth.getName());
-                    String referer = req.getHeader("referer");
-                    if (referer.contains("login")) {
-                        resp.sendRedirect("/index");
-                    } else {
-                        resp.sendRedirect(referer);
-                    }
-                })
-                .failureHandler((req, resp, e) -> {
-                    System.out.println("==> " + e);
-                    String error = "Unknown Error !!!";
-                    if (e instanceof LockedException) {
-                        error = "Account Locked !!!";
-                    } else if (e instanceof BadCredentialsException) {
-                        error = "Bad Credentials !!!";
-                    } else if (e instanceof DisabledException) {
-                        error = "Account Disabled !!!";
-                    } else if (e instanceof AccountExpiredException) {
-                        error = "Account Expired !!!";
-                    } else if (e instanceof CredentialsExpiredException) {
-                        error = "Credentials Expired !!!";
-                    }
-                    resp.sendRedirect("/login?error=" + error);
-                })
-                .and()
+//                .formLogin()
+//                .loginPage("/loginPage")
+//                .loginProcessingUrl("/login")
+//                .usernameParameter("name")
+//                .passwordParameter("password")
+//                .successHandler((req, resp, auth) -> {
+//                    req.getSession().setAttribute("userName", auth.getName());
+//                    String referer = req.getHeader("referer");
+//                    if (referer.contains("login")) {
+//                        resp.sendRedirect("/index");
+//                    } else {
+//                        resp.sendRedirect(referer);
+//                    }
+//                })
+//                .failureHandler((req, resp, e) -> {
+//                    System.out.println("==> " + e);
+//                    String error = "Unknown Error !!!";
+//                    if (e instanceof LockedException) {
+//                        error = "Account Locked !!!";
+//                    } else if (e instanceof BadCredentialsException) {
+//                        error = "Bad Credentials !!!";
+//                    } else if (e instanceof DisabledException) {
+//                        error = "Account Disabled !!!";
+//                    } else if (e instanceof AccountExpiredException) {
+//                        error = "Account Expired !!!";
+//                    } else if (e instanceof CredentialsExpiredException) {
+//                        error = "Credentials Expired !!!";
+//                    }
+//                    resp.sendRedirect("/loginPage?error=" + error);
+//                })
+//                .and()
 //                .rememberMe()
 //                .key("xClass")
+//                .tokenRepository(customRememberMeTokenRepositoryImpl)
 //                .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -143,12 +142,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    @Bean
-    RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_admin > ROLE_user";
-        roleHierarchy.setHierarchy(hierarchy);
-        return roleHierarchy;
+    //    @Bean //不要打开@Bean注解,否则会被当作普通Filter, 自动加载到ApplicationFilterChain中
+    // 通过HttpSecurity的addFilter方法,手工加入到SpringSecurity中的DefaultSecurityFilterChain里
+    CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
+        CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
+        customUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler((req, resp, auth) -> {
+            req.getSession().setAttribute("userName", auth.getName());
+            String referer = req.getHeader("referer");
+            if (referer.contains("loginPage")) {
+                resp.sendRedirect("/index");
+            } else {
+                resp.sendRedirect(referer);
+            }
+        });
+        customUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler((req, resp, e) -> {
+            String error;
+            if (e instanceof LockedException) {
+                error = "Account Locked !!!";
+            } else if (e instanceof BadCredentialsException) {
+                error = "Bad Credentials !!!";
+            } else if (e instanceof DisabledException) {
+                error = "Account Disabled !!!";
+            } else if (e instanceof AccountExpiredException) {
+                error = "Account Expired !!!";
+            } else if (e instanceof CredentialsExpiredException) {
+                error = "Credentials Expired !!!";
+            } else {
+                error = e.getMessage();
+            }
+            resp.sendRedirect("/loginPage?error=" + error);
+        });
+        customUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        customUsernamePasswordAuthenticationFilter.setRememberMeServices(persistentTokenBasedRememberMeServices);
+        customUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/login");
+        customUsernamePasswordAuthenticationFilter.setUsernameParameter("name");
+        customUsernamePasswordAuthenticationFilter.setPasswordParameter("password");
+        return customUsernamePasswordAuthenticationFilter;
     }
-
 }

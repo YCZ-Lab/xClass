@@ -1,5 +1,6 @@
 package com.ysh.interceptor;
 
+import com.ysh.controller.ErrorHandle;
 import com.ysh.model.Logs;
 import com.ysh.service.LogsService;
 import org.springframework.core.NamedThreadLocal;
@@ -20,13 +21,13 @@ public class Request extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
         time.set(System.currentTimeMillis());
         return true;
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) {
         Logs logs = new Logs();
         String temp;
         logs.setRequestURI(req.getRequestURI());
@@ -58,16 +59,7 @@ public class Request extends HandlerInterceptorAdapter {
             temp = "";
         }
         logs.setAcceptLanguage(temp);
-        temp = req.getRequestedSessionId();
-        if (temp == null) {
-            temp = "";
-        }
-        logs.setSessionId(temp);
-        temp = resp.getContentType();
-        if (temp == null) {
-            temp = "";
-        }
-        logs.setContentType(temp);
+        ErrorHandle.isNUll(req, resp, logs);
         logs.setConsumeTime(System.currentTimeMillis() - time.get());
         logs.setSource("Interceptor");
         logsService.save(logs);
