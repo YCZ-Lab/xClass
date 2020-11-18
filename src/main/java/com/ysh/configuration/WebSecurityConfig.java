@@ -60,32 +60,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterAt(new RememberMeAuthenticationFilter(authenticationManagerBean(), rememberMeServices), RememberMeAuthenticationFilter.class);
         //以下代码会注册一个匿名的RememberMeAuthenticationFilter
-        http.rememberMe()
-                .key("xClass")
-                .tokenRepository(customRememberMeTokenRepositoryImpl)
-                .addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
-                    @Override
-                    public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
-
-                        RememberMeAuthenticationFilter newFilter = new RememberMeAuthenticationFilter(
-                                (AuthenticationManager) getByReflection(object, "authenticationManager"),
-                                (RememberMeServices) getByReflection(object, "rememberMeServices")
-                        ) {
-                            @Override
-                            protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
-                                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                                request.getSession().setAttribute("userName", auth.getName());
-                            }
-                        };
-                        return (O) newFilter;
-                    }
-
-                    private <O extends RememberMeAuthenticationFilter> Object getByReflection(O object, String name) {
-                        Field field = ReflectionUtils.findField(object.getClass(), name);
-                        ReflectionUtils.makeAccessible(field);
-                        return ReflectionUtils.getField(field, object);
-                    }
-                });
+//        http.rememberMe()
+//                .key("xClass")
+//                .tokenRepository(customRememberMeTokenRepositoryImpl)
+//                .addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
+//                    @Override
+//                    public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
+//
+//                        RememberMeAuthenticationFilter newFilter = new RememberMeAuthenticationFilter(
+//                                (AuthenticationManager) getByReflection(object, "authenticationManager"),
+//                                (RememberMeServices) getByReflection(object, "rememberMeServices")
+//                        ) {
+//                            @Override
+//                            protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
+//                                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//                                request.getSession().setAttribute("userName", auth.getName());
+//                            }
+//                        };
+//                        return (O) newFilter;
+//                    }
+//
+//                    private <O extends RememberMeAuthenticationFilter> Object getByReflection(O object, String name) {
+//                        Field field = ReflectionUtils.findField(object.getClass(), name);
+//                        ReflectionUtils.makeAccessible(field);
+//                        return ReflectionUtils.getField(field, object);
+//                    }
+//                });
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
@@ -129,10 +129,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    resp.sendRedirect("/loginPage?error=" + error);
 //                })
 //                .and()
-//                .rememberMe()
-//                .key("xClass")
-//                .tokenRepository(customRememberMeTokenRepositoryImpl)
-//                .and()
+                .rememberMe()
+                .key("xClass")
+                .tokenRepository(customRememberMeTokenRepositoryImpl)
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
@@ -147,7 +147,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
         customUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler((req, resp, auth) -> {
-            req.getSession().setAttribute("userName", auth.getName());
+//            req.getSession().setAttribute("userName", auth.getName());
             String referer = req.getHeader("referer");
             if (referer.contains("loginPage")) {
                 resp.sendRedirect("/index");

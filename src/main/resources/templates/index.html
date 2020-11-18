@@ -42,7 +42,7 @@
             </div>
             <div class="col-lg-6">
                 <form class="hero-form" method="post" action="/login"
-                      th:remove="${session.userName == null} ? none : all">
+                      th:remove="${session.SPRING_SECURITY_CONTEXT == null} ? none : all">
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
