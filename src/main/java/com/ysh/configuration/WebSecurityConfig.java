@@ -142,7 +142,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    //    @Bean //不要打开@Bean注解,否则会被当作普通Filter, 自动加载到ApplicationFilterChain中
+    // @Bean //不要打开@Bean注解,否则会被当作普通Filter, 自动加载到ApplicationFilterChain中
     // 通过HttpSecurity的addFilter方法,手工加入到SpringSecurity中的DefaultSecurityFilterChain里
     CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
