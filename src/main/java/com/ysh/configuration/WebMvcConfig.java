@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -17,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("loginPage").setViewName("login");
+        registry.addViewController("login").setViewName("login");
         registry.addViewController("index").setViewName("index");
         registry.addViewController("jobs").setViewName("jobs");
         registry.addViewController("finances").setViewName("fPodcasts");
@@ -41,4 +42,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/js/**");
 //        registry.addInterceptor(new VerifyCodeRegister()).addPathPatterns("/register");
     }
+
 }

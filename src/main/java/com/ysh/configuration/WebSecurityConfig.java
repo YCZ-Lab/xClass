@@ -6,23 +6,23 @@ import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.*;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.session.SessionInformationExpiredEvent;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
+import java.util.Locale;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -54,9 +54,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/css/**")
+                .antMatchers("/icon-fonts/**")
+                .antMatchers("/img/**")
+                .antMatchers("/js/**");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+//        http.addFilterAt(new ConcurrentSessionFilter(sessionRegistry(), event -> {
+//            System.out.println("event-0: " + event.getClass());
+//            System.out.println("Session Expired: " + event.getRequest().getSession().getId());
+//            event.getResponse().sendRedirect("/index?error=You are already logged in on another device");
+//        }), ConcurrentSessionFilter.class);
         http.addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterAt(new RememberMeAuthenticationFilter(authenticationManagerBean(), rememberMeServices), RememberMeAuthenticationFilter.class);
         //以下代码会注册一个匿名的RememberMeAuthenticationFilter
@@ -140,16 +154,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/index")
                 .and()
                 .csrf().disable();
+//                .sessionManagement()
+//                .maximumSessions(1);
     }
 
     // @Bean //不要打开@Bean注解,否则会被当作普通Filter, 自动加载到ApplicationFilterChain中
     // 通过HttpSecurity的addFilter方法,手工加入到SpringSecurity中的DefaultSecurityFilterChain里
     CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
+//        CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter(sessionRegistry());
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
         customUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler((req, resp, auth) -> {
 //            req.getSession().setAttribute("userName", auth.getName());
             String referer = req.getHeader("referer");
-            if (referer.contains("loginPage")) {
+            if (referer.contains("login")) {
                 resp.sendRedirect("/index");
             } else {
                 resp.sendRedirect(referer);
@@ -170,13 +187,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             } else {
                 error = e.getMessage();
             }
-            resp.sendRedirect("/loginPage?error=" + error);
+            resp.sendRedirect("/login?error=" + error);
         });
         customUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         customUsernamePasswordAuthenticationFilter.setRememberMeServices(persistentTokenBasedRememberMeServices);
-        customUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/login");
+//        ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlAuthenticationStrategy = new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+//        concurrentSessionControlAuthenticationStrategy.setMaximumSessions(1);
+//        concurrentSessionControlAuthenticationStrategy.setExceptionIfMaximumExceeded(false);
+//        customUsernamePasswordAuthenticationFilter.setSessionAuthenticationStrategy(concurrentSessionControlAuthenticationStrategy);
+        customUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/doLogin");
         customUsernamePasswordAuthenticationFilter.setUsernameParameter("name");
         customUsernamePasswordAuthenticationFilter.setPasswordParameter("password");
         return customUsernamePasswordAuthenticationFilter;
     }
+
+//    @Bean
+//    SessionRegistry sessionRegistry() {
+//        return new SessionRegistryImpl();
+//    }
 }

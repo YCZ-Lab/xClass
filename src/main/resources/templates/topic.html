@@ -87,7 +87,7 @@
                 <!--                <div class="progress mb-2" style="height: 5px;">-->
                 <!--                    <div class="progress-bar bg-success w-100"></div>-->
                 <!--                </div>-->
-                <div th:if="${session.SPRING_SECURITY_CONTEXT}">
+                <div th:if="${session.userName}">
                     <form class="hero-form row justify-content-center" style="background: #f8f8f8" method="post"
                           action="/submit/topic">
                         <input type="text" name="title" placeholder="Title">
@@ -99,7 +99,7 @@
                         </button>
                     </form>
                 </div>
-                <div th:if="!${session.SPRING_SECURITY_CONTEXT}" class="row justify-content-center my-3">
+                <div th:if="!${session.userName}" class="row justify-content-center my-3">
                     <a data-toggle="modal" data-target="#login" href="" class="btn btn-outline-success rounded-pill"
                        style="min-width: 188px;">Sign up</a>
                 </div>
