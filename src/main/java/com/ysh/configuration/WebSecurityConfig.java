@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
+
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -53,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
-        http.authenticationProvider(customAuthenticationProvider());
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
@@ -112,7 +113,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .maximumSessions(1);
     }
 
-    @Bean
     CustomAuthenticationProvider customAuthenticationProvider() {
         CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider();
         customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -126,10 +126,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserService();
     }
 
-//    @Bean
-//    @Override
-//    protected AuthenticationManager authenticationManager() throws Exception {
-//        ProviderManager providerManager = new ProviderManager(Arrays.asList(customAuthenticationProvider()));
-//        return providerManager;
-//    }
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() {
+        return new ProviderManager(Collections.singletonList(customAuthenticationProvider()));
+    }
 }
