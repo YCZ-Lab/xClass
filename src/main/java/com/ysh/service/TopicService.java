@@ -15,27 +15,15 @@ public class TopicService {
     }
 
     public Topic getTopicById(int id) {
-        Topic topic = topicMapper.getTopicById(id);
-//        topic.setReplys(topicMapper.getReplysByTopicId(id));
-        return topic;
+        return topicMapper.getTopicById(id);
     }
 
     public List<Topic> getAllTopics(String region) {
-        List<Topic> topics = topicMapper.getAllTopics(region);
-//        for (int i = 0; i < topics.size(); i++) {
-//            Topic topic = topics.get(i);
-//            topic.setReplys(topicMapper.getReplysByTopicId(topic.getId()));
-//        }
-        return topics;
+        return topicMapper.getAllTopics(region);
     }
 
     public List<Topic> getTopicsByPage(int start, int size, String region) {
-        List<Topic> topics = topicMapper.getTopicsByPage(start, size, region);
-//        for (int i = 0; i < topics.size(); i++) {
-//            Topic topic = topics.get(i);
-//            topic.setReplys(topicMapper.getReplysByTopicId(topic.getId()));
-//        }
-        return topics;
+        return topicMapper.getTopicsByPage(start, size, region);
     }
 
     public int getTopicPages(int size, String region) {

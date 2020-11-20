@@ -2,6 +2,7 @@ package com.ysh.service;
 
 import com.ysh.mapper.UserMapper;
 import com.ysh.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
-    final UserMapper userMapper;
+    @Autowired
+    UserMapper userMapper;
 
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public UserService() {
     }
 
     @Override

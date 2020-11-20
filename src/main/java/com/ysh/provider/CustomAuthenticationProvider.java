@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+
         HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String requestCaptcha = req.getParameter("verifyCode");
         String genCaptcha = (String) req.getSession().getAttribute("verifyCode");

@@ -179,7 +179,7 @@ public class Router {
             mv.addObject("error", user.getUserName() + " username already exist!");
             mv.setViewName("index");
         } else {
-            mv = new ModelAndView("redirect:/loginPage");
+            mv = new ModelAndView("redirect:/login");
             User newUser = new User();
             newUser.setUserName(userName);
             newUser.setPassword(new BCryptPasswordEncoder(12).encode(password));

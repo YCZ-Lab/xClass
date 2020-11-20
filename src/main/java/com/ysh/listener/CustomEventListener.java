@@ -3,10 +3,7 @@ package com.ysh.listener;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
-import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.authentication.event.LogoutSuccessEvent;
+import org.springframework.security.authentication.event.*;
 import org.springframework.security.web.session.HttpSessionCreatedEvent;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -37,8 +34,8 @@ public class CustomEventListener implements ApplicationListener<ApplicationEvent
             System.out.println("==> " + ((AbstractAuthenticationEvent) event).getAuthentication());
             System.out.println("==> " + ((AbstractAuthenticationEvent) event).getAuthentication().getClass());
             System.out.println("==> " + ((AbstractAuthenticationEvent) event).getAuthentication().getDetails());
-            if (event instanceof AuthenticationSuccessEvent) {
-                // rememberMe登陆时也会触发InteractiveAuthenticationSuccessEvent事件
+            if (event instanceof InteractiveAuthenticationSuccessEvent || event instanceof AuthenticationSuccessEvent) {
+                // rememberMe登陆时也会触发事件
                 requestAttributes.getRequest().getSession().setAttribute("userName", ((AbstractAuthenticationToken) event.getSource()).getName());
             } else if (event instanceof AbstractAuthenticationFailureEvent || event instanceof LogoutSuccessEvent) {
                 requestAttributes.getRequest().getSession().removeAttribute("userName");
