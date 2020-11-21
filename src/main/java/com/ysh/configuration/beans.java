@@ -34,4 +34,11 @@ public class beans {
     HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
+
+//    @Bean
+//    ReloadableResourceBundleMessageSource messageSource() {
+//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+//        messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+//        return messageSource;
+//    }
 }

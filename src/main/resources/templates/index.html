@@ -42,12 +42,21 @@
             </div>
             <div class="col-lg-6">
                 <form class="hero-form" method="post" action="/doLogin"
-                      th:remove="${session.SPRING_SECURITY_CONTEXT == null} ? none : all">
+                      th:remove="${session.userName == null} ? none : all">
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
                                 th:unless="${param.error == null}"
-                                th:text="${param.error}">Error</h5>
+                                th:text="${param.error}">
+                                Error</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="alert alert-danger text-center"
+                                th:unless="${session.AUTHENTICATION_EXCEPTION == null}"
+                                th:text="${session.AUTHENTICATION_EXCEPTION}">
+                                Error</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -79,8 +88,8 @@
                     </div>
                     <div class="row">
                         <div class="col custom-control custom-switch ml-4">
-                            <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
-                            <label class="custom-control-label text-white" for="remember-me"><small>Remember
+                            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                            <label class="custom-control-label text-white" for="remember"><small>Remember
                                 Me</small></label>
                         </div>
                     </div>

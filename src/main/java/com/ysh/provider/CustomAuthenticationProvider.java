@@ -21,7 +21,9 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
             throw new AuthenticationServiceException("verification code must be filled!");
         } else if (genCaptcha == null || genCaptcha.equals("")) {
             throw new AuthenticationServiceException("verification code lost!");
-        } else if (!genCaptcha.toLowerCase().equals(requestCaptcha.toLowerCase())) {
+        }
+        req.getSession().removeAttribute("verifyCode");
+        if (!genCaptcha.toLowerCase().equals(requestCaptcha.toLowerCase())) {
             throw new AuthenticationServiceException("Verification code error!");
         }
         super.additionalAuthenticationChecks(userDetails, authentication);

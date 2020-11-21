@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -201,7 +202,13 @@ public class Router {
         String verifyCode = vc.getText();
         HttpSession session = req.getSession();
         session.setAttribute("verifyCode", verifyCode);
-        VerifyCode.output(image, resp.getOutputStream());
+//        resp.setHeader("Cache-Control", "no-store");
+//        resp.setHeader("Pragma", "no-cache");
+//        resp.setDateHeader("Expires", 0);
+        resp.setContentType("image/jpeg");
+        try (ServletOutputStream out = resp.getOutputStream()) {
+            VerifyCode.output(image, out);
+        }
     }
 
 //    @GetMapping("/login")

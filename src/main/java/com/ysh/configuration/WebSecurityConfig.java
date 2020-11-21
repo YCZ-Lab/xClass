@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.URLEncoder;
 import java.util.Collections;
 
 @Configuration
@@ -55,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
@@ -65,16 +67,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole("admin")
 //                .antMatchers("/monitor/**").fullyAuthenticated()
                 .anyRequest()
-                .permitAll()
-                .and()
-                .formLogin()
+                .permitAll();
+
+        http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/doLogin")
                 .usernameParameter("name")
                 .passwordParameter("password")
                 .successHandler((req, resp, auth) -> {
                     String referer = req.getHeader("referer");
-                    if (referer.contains("login")) {
+                    if (referer == null || referer.contains("login")) {
                         resp.sendRedirect("/index");
                     } else {
                         resp.sendRedirect(referer);
@@ -95,22 +97,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     } else {
                         error = e.getMessage();
                     }
-                    resp.sendRedirect("/login?error=" + error);
+                    resp.sendRedirect("/login?error=" + URLEncoder.encode(error, "UTF-8"));
                 })
                 .and()
                 .rememberMe()
+                .rememberMeCookieName("remember")
+                .rememberMeParameter("remember")
                 .key("xClass")
                 .tokenRepository(customRememberMeTokenRepositoryImpl)
-                .and()
-                .logout()
+                .tokenValiditySeconds(60 * 60 * 24 * 30)
+                .useSecureCookie(true);
+
+        http.logout()
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/index")
-                .and()
-                .csrf().disable();
-//                .sessionManagement()
-//                .maximumSessions(1);
+                .deleteCookies("JSESSIONID");
+
+        http.csrf().disable();
+
+        http.sessionManagement()
+                .invalidSessionUrl("/login?error=" + URLEncoder.encode("会话已过期,请重新登录 !", "UTF-8"))
+                .maximumSessions(1)
+                .expiredUrl("/login?error=" + URLEncoder.encode("您已在另外一台设备登陆,本次登录被迫下线 !", "UTF-8"))
+                .maxSessionsPreventsLogin(false);
     }
 
     CustomAuthenticationProvider customAuthenticationProvider() {
