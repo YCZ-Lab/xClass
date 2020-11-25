@@ -23,60 +23,31 @@
 
 <body>
 
-<div class="row align-items-center">
-    <iframe
-            src="https://player.twitch.tv/?channel=insomniac&parent=xclass.highspeed.vip"
-            height="1280"
-            width="720"
-            frameborder="1"
-            scrolling="no"
-            allowfullscreen="yes">
-    </iframe>
-</div>
+<div id="twitch-embed"></div>
 
-<div id="smart-button-container">
-    <div style="text-align: center;">
-        <div id="paypal-button-container"></div>
-    </div>
-</div>
+<!-- Load the Twitch embed script -->
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+
+<!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
+<script type="text/javascript">
+    var embed = new Twitch.Embed("twitch-embed", {
+        width: "100%",
+        height: 480,
+        channel: "monstercat",
+        // only needed if your site is also embedded on embed.example.com and othersite.example.com
+        parent: ["xclass.highspeed.vip"]
+    });
+    embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+        var player = embed.getPlayer();
+        player.play();
+    });
+</script>
+
 
 <footer th:replace="modular/components :: footer">
 </footer>
 
 <!--====== Javascripts & Jquery ======-->
-<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=CAD"
-        data-sdk-integration-source="button-factory"></script>
-<script>
-    function initPayPalButton() {
-        paypal.Buttons({
-            style: {
-                shape: 'pill',
-                color: 'gold',
-                layout: 'vertical',
-                label: 'paypal',
-
-            },
-
-            createOrder: function (data, actions) {
-                return actions.order.create({
-                    purchase_units: [{"amount": {"currency_code": "CAD", "value": 1}}]
-                });
-            },
-
-            onApprove: function (data, actions) {
-                return actions.order.capture().then(function (details) {
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                });
-            },
-
-            onError: function (err) {
-                console.log(err);
-            }
-        }).render('#paypal-button-container');
-    }
-
-    initPayPalButton();
-</script>
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
 <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
 <script src="../static/js/jquery.slicknav.min.js" th:src="@{js/jquery.slicknav.min.js}"></script>
