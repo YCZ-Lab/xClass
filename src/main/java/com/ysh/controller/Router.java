@@ -3,9 +3,7 @@ package com.ysh.controller;
 import com.ysh.model.Reply;
 import com.ysh.model.Topic;
 import com.ysh.model.User;
-import com.ysh.service.ReplyService;
-import com.ysh.service.TopicService;
-import com.ysh.service.UserService;
+import com.ysh.service.*;
 import com.ysh.utils.VerifyCode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,16 +22,21 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class Router {
     final UserService userService;
+    final MobilePhoneUserDetailsService mobilePhoneUserDetailsService;
+    final MobilePhoneCodeSendService mobilePhoneCodeSendService;
     final TopicService topicService;
     final ReplyService replyService;
     int size = 3;
 
-    public Router(UserService userService, TopicService topicService, ReplyService replyService) {
+    public Router(UserService userService, MobilePhoneUserDetailsService mobilePhoneUserDetailsService, MobilePhoneCodeSendService mobilePhoneCodeSendService, TopicService topicService, ReplyService replyService) {
         this.userService = userService;
+        this.mobilePhoneUserDetailsService = mobilePhoneUserDetailsService;
+        this.mobilePhoneCodeSendService = mobilePhoneCodeSendService;
         this.topicService = topicService;
         this.replyService = replyService;
     }
@@ -87,6 +90,8 @@ public class Router {
             case "/forum":
                 region = "general";
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + region);
         }
         topic.setRegion(region);
         topicService.save(topic);
@@ -160,10 +165,10 @@ public class Router {
     }
 
     @PostMapping("/register")
-    public ModelAndView saveUser(String userName, String password, String email) {
+    public ModelAndView saveUser(String userName, String password, String email, String mobilePhone) {
         ModelAndView mv;
         User user = null;
-        if (userName == null || userName.equals("")) {
+        if (userName == null || "".equals(userName)) {
             mv = new ModelAndView();
             mv.addObject("error", "Username can not be empty!");
             mv.setViewName("index");
@@ -174,23 +179,35 @@ public class Router {
         } catch (UsernameNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println(user);
         if (user != null) {
             mv = new ModelAndView();
             mv.addObject("error", user.getUserName() + " username already exist!");
             mv.setViewName("index");
-        } else {
-            mv = new ModelAndView("redirect:/login");
-            User newUser = new User();
-            newUser.setUserName(userName);
-            newUser.setPassword(new BCryptPasswordEncoder(12).encode(password));
-            newUser.setEmail(email);
-            newUser.setCreateDateTime(new Timestamp(System.currentTimeMillis()));
-            newUser.setEnabled(true);
-            newUser.setLocked(false);
-            userService.save(newUser);
-            userService.setRole(((User) userService.loadUserByUsername(userName)).getId());
+            return mv;
         }
+        try {
+            user = (User) mobilePhoneUserDetailsService.loadUserByUsername(mobilePhone);
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (user != null) {
+            mv = new ModelAndView();
+            mv.addObject("error", user.getUserName() + " mobile Phone already exist!");
+            mv.setViewName("index");
+            return mv;
+        }
+        mv = new ModelAndView("redirect:/login");
+        User newUser = new User();
+        newUser.setUserName(userName);
+        newUser.setPassword(new BCryptPasswordEncoder(12).encode(password));
+        newUser.setEmail(email);
+        newUser.setMobilePhone(mobilePhone);
+        newUser.setCreateDateTime(new Timestamp(System.currentTimeMillis()));
+        newUser.setEnabled(true);
+        newUser.setLocked(false);
+        userService.save(newUser);
+        userService.setRole(((User) userService.loadUserByUsername(userName)).getId());
+
         return mv;
     }
 
@@ -209,6 +226,37 @@ public class Router {
         try (ServletOutputStream out = resp.getOutputStream()) {
             VerifyCode.output(image, out);
         }
+    }
+
+    @GetMapping("/mobilePhoneCode")
+    public void mobilePhoneCode(String mobilePhone, HttpServletRequest req, HttpServletResponse resp) {
+        if (!mobilePhoneUserDetailsService.isExistByMobilePhone(mobilePhone)) {
+            try {
+                resp.getWriter().println("Mobile phone number does not exist or is duplicate!");
+                resp.getWriter().close();
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Random random = new Random();
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            code.append(random.nextInt(10));
+        }
+        try {
+            String result = mobilePhoneCodeSendService.send(mobilePhone, code.toString());
+            if (result == null) {
+                resp.getWriter().println("Send verification successfully !");
+            } else {
+                resp.getWriter().println(result);
+                resp.getWriter().close();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        req.getSession().setAttribute("mobilePhoneCode", code.toString());
     }
 
 //    @GetMapping("/login")

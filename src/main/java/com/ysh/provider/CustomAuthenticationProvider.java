@@ -17,9 +17,9 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String requestCaptcha = req.getParameter("verifyCode");
         String genCaptcha = (String) req.getSession().getAttribute("verifyCode");
-        if (requestCaptcha == null || requestCaptcha.equals("")) {
+        if (requestCaptcha == null || "".equals(requestCaptcha)) {
             throw new AuthenticationServiceException("verification code must be filled!");
-        } else if (genCaptcha == null || genCaptcha.equals("")) {
+        } else if (genCaptcha == null || "".equals(genCaptcha)) {
             throw new AuthenticationServiceException("verification code lost!");
         }
         req.getSession().removeAttribute("verifyCode");

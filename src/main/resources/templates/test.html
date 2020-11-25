@@ -23,15 +23,60 @@
 
 <body>
 
-<div class="custom-control custom-switch">
-    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-    <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+<div class="row align-items-center">
+    <iframe
+            src="https://player.twitch.tv/?channel=insomniac&parent=xclass.highspeed.vip"
+            height="1280"
+            width="720"
+            frameborder="1"
+            scrolling="no"
+            allowfullscreen="yes">
+    </iframe>
+</div>
+
+<div id="smart-button-container">
+    <div style="text-align: center;">
+        <div id="paypal-button-container"></div>
+    </div>
 </div>
 
 <footer th:replace="modular/components :: footer">
 </footer>
 
 <!--====== Javascripts & Jquery ======-->
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=CAD"
+        data-sdk-integration-source="button-factory"></script>
+<script>
+    function initPayPalButton() {
+        paypal.Buttons({
+            style: {
+                shape: 'pill',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'paypal',
+
+            },
+
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{"amount": {"currency_code": "CAD", "value": 1}}]
+                });
+            },
+
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            },
+
+            onError: function (err) {
+                console.log(err);
+            }
+        }).render('#paypal-button-container');
+    }
+
+    initPayPalButton();
+</script>
 <script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
 <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
 <script src="../static/js/jquery.slicknav.min.js" th:src="@{js/jquery.slicknav.min.js}"></script>

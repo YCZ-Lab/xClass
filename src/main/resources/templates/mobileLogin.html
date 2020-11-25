@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="modular/components :: head(~{::title})">
+
+    <title>xClass - login</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
+          rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
+    <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
+    <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
+    <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
+    <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
+
+</head>
+
+<body>
+
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<header th:replace="modular/components :: navigationBar">
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hs-text">
+                    <h2>Mobile Login</h2>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <!-- //////////////////////////////////////////////////////////////////////////////////-->
+                <form class="hero-form" method="post" action="/doMobileLogin"
+                      th:remove="${session.userName == null} ? none : all">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="alert alert-danger text-center"
+                                th:unless="${param.error == null}"
+                                th:text="${param.error}">Error</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input class="rounded-pill" type="text" id="mobilePhoneNumber" name="mobilePhoneNumber"
+                                   placeholder="Your Mobile Phone"
+                                   required
+                                   autofocus>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <input class="rounded-pill" type="text" name="verifyCode" placeholder="Verify Code">
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-success rounded-pill py-0"
+                                    id="sendCode" type="button" onclick="sendMobilePhoneCode()"
+                                    style="margin-bottom: 30px;min-width: 100px;">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col custom-control custom-switch ml-4">
+                            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                            <label class="custom-control-label text-white"
+                                   for="remember"><small>Remember
+                                Me</small></label>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-2">
+                        <button class="btn btn-outline-success rounded-pill" style="min-width: 188px;"
+                                type="submit">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <!-- //////////////////////////////////////////////////////////////////////////////////-->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-slider owl-carousel bg-danger">
+        <div class="hs-item set-bg" data-setbg="../static/img/hero-slider/1.jpg"
+             th:data-setbg="@{'img/hero-slider/1.jpg'}"></div>
+        <div class="hs-item set-bg" data-setbg="../static/img/hero-slider/2.jpg"
+             th:data-setbg="@{'img/hero-slider/2.jpg'}"></div>
+        <div class="hs-item set-bg" data-setbg="../static/img/hero-slider/3.jpg"
+             th:data-setbg="@{'img/hero-slider/3.jpg'}"></div>
+    </div>
+
+</section>
+<!-- Hero Section end -->
+
+<footer th:replace="modular/components :: footer">
+</footer>
+
+<!--====== Javascripts & Jquery ======-->
+<script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
+<script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery.slicknav.min.js" th:src="@{js/jquery.slicknav.min.js}"></script>
+<script src="../static/js/owl.carousel.min.js" th:src="@{js/owl.carousel.min.js}"></script>
+<script src="../static/js/circle-progress.min.js" th:src="@{js/circle-progress.min.js}"></script>
+<script src="../static/js/jquery-ui.min.js" th:src="@{js/jquery-ui.min.js}"></script>
+<script src="../static/js/main.js" th:src="@{js/main.js}"></script>
+<script>
+    function sendMobilePhoneCode() {
+        var mobilePhoneNumber = $('#mobilePhoneNumber').val().trim();
+        if (mobilePhoneNumber != '') {
+            var url = "/mobilePhoneCode?mobilePhone=" + mobilePhoneNumber;
+            $.get(url, function (data) {
+                alert(data);
+            })
+        } else {
+            alert("Phone number can not be blank")
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,12 +1,15 @@
 package com.ysh.configuration;
 
+import com.ysh.handler.CustomAuthenticationFailureHandler;
+import com.ysh.handler.CustomAuthenticationSuccessHandler;
 import com.ysh.provider.CustomAuthenticationProvider;
 import com.ysh.service.CustomRememberMeTokenRepositoryImpl;
 import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,11 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${http.port}")
     private int httpPort;
 
+    final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     final CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl;
+    final MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig;
 
-    public WebSecurityConfig(CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl) {
+    public WebSecurityConfig(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomAuthenticationFailureHandler customAuthenticationFailureHandler, CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl, MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig) {
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
         this.customRememberMeTokenRepositoryImpl = customRememberMeTokenRepositoryImpl;
-
+        this.mobilePhoneAuthenticationConfig = mobilePhoneAuthenticationConfig;
     }
 
     @Bean
@@ -57,12 +65,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
+//        http.addFilterBefore(new MobilePhoneVerifyCodeFilter(customAuthenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
+
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
                 .antMatchers("/submit/**")
+                .rememberMe()
+                .antMatchers("/submit/**")
                 .hasRole("user")
 //                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("admin")
+//                .antMatchers("/monitor/**")
+//                .fullyAuthenticated()
                 .antMatchers("/monitor/**")
                 .hasRole("admin")
 //                .antMatchers("/monitor/**").fullyAuthenticated()
@@ -74,31 +88,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/doLogin")
                 .usernameParameter("name")
                 .passwordParameter("password")
-                .successHandler((req, resp, auth) -> {
-                    String referer = req.getHeader("referer");
-                    if (referer == null || referer.contains("login")) {
-                        resp.sendRedirect("/index");
-                    } else {
-                        resp.sendRedirect(referer);
-                    }
-                })
-                .failureHandler((req, resp, e) -> {
-                    String error;
-                    if (e instanceof LockedException) {
-                        error = "Account Locked !!!";
-                    } else if (e instanceof BadCredentialsException) {
-                        error = "Bad Credentials !!!";
-                    } else if (e instanceof DisabledException) {
-                        error = "Account Disabled !!!";
-                    } else if (e instanceof AccountExpiredException) {
-                        error = "Account Expired !!!";
-                    } else if (e instanceof CredentialsExpiredException) {
-                        error = "Credentials Expired !!!";
-                    } else {
-                        error = e.getMessage();
-                    }
-                    resp.sendRedirect("/login?error=" + URLEncoder.encode(error, "UTF-8"));
-                })
+//                .successHandler((req, resp, auth) -> {
+//                    String referer = req.getHeader("referer");
+//                    if (referer == null || referer.contains("login")) {
+//                        resp.sendRedirect("/index");
+//                    } else {
+//                        resp.sendRedirect(referer);
+//                    }
+//                })
+                .successHandler(customAuthenticationSuccessHandler)
+//                .failureHandler((req, resp, e) -> {
+//                    String error;
+//                    if (e instanceof LockedException) {
+//                        error = "Account Locked !!!";
+//                    } else if (e instanceof BadCredentialsException) {
+//                        error = "Bad Credentials !!!";
+//                    } else if (e instanceof DisabledException) {
+//                        error = "Account Disabled !!!";
+//                    } else if (e instanceof AccountExpiredException) {
+//                        error = "Account Expired !!!";
+//                    } else if (e instanceof CredentialsExpiredException) {
+//                        error = "Credentials Expired !!!";
+//                    } else {
+//                        error = e.getMessage();
+//                    }
+//                    resp.sendRedirect("/login?error=" + URLEncoder.encode(error, "UTF-8"));
+//                })
+                .failureHandler(customAuthenticationFailureHandler)
                 .and()
                 .rememberMe()
                 .rememberMeCookieName("remember")
@@ -118,10 +134,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.sessionManagement()
-                .invalidSessionUrl("/login?error=" + URLEncoder.encode("会话已过期,请重新登录 !", "UTF-8"))
+                .invalidSessionUrl("/login?error=" + URLEncoder.encode("The session has expired, please log in again !", "UTF-8"))
                 .maximumSessions(1)
-                .expiredUrl("/login?error=" + URLEncoder.encode("您已在另外一台设备登陆,本次登录被迫下线 !", "UTF-8"))
+                .expiredUrl("/login?error=" + URLEncoder.encode("You have logged in on another device, this login was forced to go offline !", "UTF-8"))
                 .maxSessionsPreventsLogin(false);
+
+        http.apply(mobilePhoneAuthenticationConfig);
     }
 
     CustomAuthenticationProvider customAuthenticationProvider() {

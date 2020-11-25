@@ -11,13 +11,13 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select id,userName,password,email,createDateTime,enabled,locked from user where userName=#{userName}")
+    @Select("select id, userName, password, email, mobilePhone, createDateTime, enabled, locked from user where userName=#{userName}")
     User loadUserByUserName(String userName);
 
     @Select("select * from role r,user_role ur where r.id=ur.roleID and ur.userID=#{userID}")
     List<Role> getUserRolesByUserId(int id);
 
-    @Insert("insert into user(userName, password, email, createDateTime, enabled, locked) values(#{userName},#{password},#{email},#{createDateTime},#{enabled},#{locked})")
+    @Insert("insert into user(userName, password, email, mobilePhone, createDateTime, enabled, locked) values(#{userName}, #{password}, #{email}, #{mobilePhone}, #{createDateTime}, #{enabled}, #{locked})")
     void save(User user);
 
     @Insert("insert into user_role(userID, roleID) values(#{id},2)")

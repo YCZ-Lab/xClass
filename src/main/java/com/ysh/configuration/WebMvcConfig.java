@@ -30,6 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("ePodcasts").setViewName("ePodcasts");
         registry.addViewController("contact").setViewName("contact");
         registry.addViewController("test").setViewName("test");
+        //////////////////////////////////////////////////////////////////////////////////////////
+        registry.addViewController("mLogin").setViewName("mobileLogin");
     }
 
     @Override

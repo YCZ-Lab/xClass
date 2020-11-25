@@ -59,7 +59,7 @@ public class Request extends HandlerInterceptorAdapter {
             temp = "";
         }
         logs.setAcceptLanguage(temp);
-        ErrorHandle.isNUll(req, resp, logs);
+        ErrorHandle.isnull(req, resp, logs);
         logs.setConsumeTime(System.currentTimeMillis() - time.get());
         logs.setSource("Interceptor");
         logsService.save(logs);

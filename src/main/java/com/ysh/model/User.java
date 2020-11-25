@@ -15,6 +15,7 @@ public class User implements UserDetails {
     private String userName;
     private String password;
     private String email;
+    private String mobilePhone;
     private Timestamp createDateTime;
     private boolean enabled;
     private boolean locked;
@@ -65,6 +66,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public Timestamp getCreateDateTime() {
@@ -121,6 +130,9 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", createDateTime=" + createDateTime +
                 ", enabled=" + enabled +
                 ", locked=" + locked +
                 ", roles=" + roles +
