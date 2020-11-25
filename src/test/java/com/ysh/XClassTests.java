@@ -8,12 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class XClassTests {
 
-    @Autowired
-    MobilePhoneUserDetailsService mobilePhoneUserDetailsService;
-
     @Test
     void contextLoads() {
-        System.out.println(mobilePhoneUserDetailsService.isExistByMobilePhone("18501307519"));
     }
 
 }
