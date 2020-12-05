@@ -29,9 +29,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("eVideos").setViewName("eVideos");
         registry.addViewController("ePodcasts").setViewName("ePodcasts");
         registry.addViewController("contact").setViewName("contact");
-        registry.addViewController("twitch").setViewName("twitch");
         //////////////////////////////////////////////////////////////////////////////////////////
         registry.addViewController("mLogin").setViewName("mobileLogin");
+        registry.addViewController("twitch").setViewName("twitch");
+        registry.addViewController("paypal").setViewName("paypal");
     }
 
     @Override
