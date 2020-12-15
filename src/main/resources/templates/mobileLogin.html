@@ -37,12 +37,13 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="hs-text">
-                    <h2>login</h2>
+                    <h2>Mobile Login</h2>
                 </div>
             </div>
             <div class="col-lg-6">
                 <!-- //////////////////////////////////////////////////////////////////////////////////-->
-                <form class="hero-form" method="post" action="/doLogin">
+                <form class="hero-form" method="post" action="/doMobileLogin"
+                      th:remove="${session.userName == null} ? none : all">
                     <div class="row">
                         <div class="col">
                             <h5 class="alert alert-danger text-center"
@@ -52,22 +53,22 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input class="rounded-pill" type="text" name="name" placeholder="Username" required
+                            <input class="rounded-pill" type="text" id="mobilePhoneNumber" name="mobilePhoneNumber"
+                                   placeholder="Your Mobile Phone"
+                                   required
                                    autofocus>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <input class="rounded-pill" type="password" name="password" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-8">
                             <input class="rounded-pill" type="text" name="verifyCode" placeholder="Verify Code">
                         </div>
                         <div class="col-4">
-                            <img class="rounded-pill" src="/verifyCode" onclick="this.src='/verifyCode'"
-                                 style="cursor:pointer;min-width: 100px;" alt=""/>
+                            <button class="btn btn-outline-success rounded-pill py-0"
+                                    id="sendCode" type="button" onclick="sendMobilePhoneCode()"
+                                    style="margin-bottom: 30px;min-width: 100px;">
+                                Send
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -83,13 +84,6 @@
                                 type="submit">
                             Login
                         </button>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <a class="btn-outline-success rounded-pill px-2" href="" data-toggle="modal"
-                               data-dismiss="modal"
-                               data-target="#register">Register</a>
-                        </div>
                     </div>
                 </form>
                 <!-- //////////////////////////////////////////////////////////////////////////////////-->
@@ -110,13 +104,6 @@
 </section>
 <!-- Hero Section end -->
 
-<div th:replace="modular/components :: loginForm">
-</div>
-
-<div th:replace="modular/components :: registerForm">
-</div>
-
-
 <footer th:replace="modular/components :: footer">
 </footer>
 
@@ -128,6 +115,18 @@
 <script src="../static/js/circle-progress.min.js" th:src="@{js/circle-progress.min.js}"></script>
 <script src="../static/js/jquery-ui.min.js" th:src="@{js/jquery-ui.min.js}"></script>
 <script src="../static/js/main.js" th:src="@{js/main.js}"></script>
-
+<script>
+    function sendMobilePhoneCode() {
+        var mobilePhoneNumber = $('#mobilePhoneNumber').val().trim();
+        if (mobilePhoneNumber != '') {
+            var url = "/mobilePhoneCode?mobilePhone=" + mobilePhoneNumber;
+            $.get(url, function (data) {
+                alert(data);
+            })
+        } else {
+            alert("Phone number can not be blank")
+        }
+    }
+</script>
 </body>
 </html>

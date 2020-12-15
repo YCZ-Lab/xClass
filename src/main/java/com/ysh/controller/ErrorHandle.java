@@ -57,6 +57,16 @@ public class ErrorHandle extends BasicErrorController {
         logs.setRemotePort(String.valueOf(req.getRemotePort()));
         logs.setUserAgent(req.getHeader("User-Agent"));
         logs.setAcceptLanguage(req.getHeader("Accept-Language"));
+        isnull(req, resp, logs);
+        logs.setConsumeTime(-1);
+        logs.setSource("ErrorHandle");
+        logsService.save(logs);
+        //////////////////////////////////////////////////////////////
+        return mv;
+    }
+
+    public static void isnull(HttpServletRequest req, HttpServletResponse resp, Logs logs) {
+        String temp;
         temp = req.getRequestedSessionId();
         if (temp == null) {
             temp = "";
@@ -67,10 +77,5 @@ public class ErrorHandle extends BasicErrorController {
             temp = "";
         }
         logs.setContentType(temp);
-        logs.setConsumeTime(-1);
-        logs.setSource("ErrorHandle");
-        logsService.save(logs);
-        //////////////////////////////////////////////////////////////
-        return mv;
     }
 }

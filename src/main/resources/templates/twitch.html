@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="modular/components :: head(~{::title})">
+
+    <title>xClass - Test</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap"
+          rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui.min.css" th:href="@{css/jquery-ui.min.css}">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../static/css/owl.carousel.min.css" th:href="@{css/owl.carousel.min.css}"/>
+    <link rel="stylesheet" href="../static/css/flaticon.css" th:href="@{css/flaticon.css}"/>
+    <link rel="stylesheet" href="../static/css/slicknav.min.css" th:href="@{css/slicknav.min.css}"/>
+    <link rel="stylesheet" href="../static/css/hover.css" th:href="@{css/hover.css}"/>
+    <link rel="stylesheet" href="../static/css/video.css" th:href="@{css/video.css}"/>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{css/style.css}"/>
+
+</head>
+
+<body>
+
+<div id="twitch-embed"></div>
+
+<!-- Load the Twitch embed script -->
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+
+<!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
+<script type="text/javascript">
+    var embed = new Twitch.Embed("twitch-embed", {
+        width: "100%",
+        height: 480,
+        channel: "monstercat",
+        // only needed if your site is also embedded on embed.example.com and othersite.example.com
+        parent: ["xclass.highspeed.vip"]
+    });
+    embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+        var player = embed.getPlayer();
+        player.play();
+    });
+</script>
+
+
+<footer th:replace="modular/components :: footer">
+</footer>
+
+<!--====== Javascripts & Jquery ======-->
+<script src="../static/js/jquery-3.2.1.min.js" th:src="@{js/jquery-3.2.1.min.js}"></script>
+<script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery.slicknav.min.js" th:src="@{js/jquery.slicknav.min.js}"></script>
+<script src="../static/js/owl.carousel.min.js" th:src="@{js/owl.carousel.min.js}"></script>
+<script src="../static/js/circle-progress.min.js" th:src="@{js/circle-progress.min.js}"></script>
+<script src="../static/js/jquery-ui.min.js" th:src="@{js/jquery-ui.min.js}"></script>
+<script src="../static/js/main.js" th:src="@{js/main.js}"></script>
+
+</body>
+</html>

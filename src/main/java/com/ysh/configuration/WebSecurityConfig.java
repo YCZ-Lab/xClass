@@ -1,30 +1,25 @@
 package com.ysh.configuration;
 
-import com.ysh.filter.VerifyCode;
-import com.ysh.service.RememberMeTokenRepositoryService;
+import com.ysh.handler.CustomAuthenticationFailureHandler;
+import com.ysh.handler.CustomAuthenticationSuccessHandler;
+import com.ysh.provider.CustomAuthenticationProvider;
+import com.ysh.service.CustomRememberMeTokenRepositoryImpl;
 import com.ysh.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.authentication.*;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.util.ReflectionUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.util.Collections;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,15 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${http.port}")
     private int httpPort;
 
-    final UserService userService;
-    final VerifyCode verifyCode;
+    final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    final CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl;
+    final MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig;
 
-    final RememberMeTokenRepositoryService rememberMeTokenRepositoryService;
-
-    public WebSecurityConfig(UserService userService, VerifyCode verifyCode, RememberMeTokenRepositoryService rememberMeTokenRepositoryService) {
-        this.userService = userService;
-        this.verifyCode = verifyCode;
-        this.rememberMeTokenRepositoryService = rememberMeTokenRepositoryService;
+    public WebSecurityConfig(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomAuthenticationFailureHandler customAuthenticationFailureHandler, CustomRememberMeTokenRepositoryImpl customRememberMeTokenRepositoryImpl, MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig) {
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.customRememberMeTokenRepositoryImpl = customRememberMeTokenRepositoryImpl;
+        this.mobilePhoneAuthenticationConfig = mobilePhoneAuthenticationConfig;
     }
 
     @Bean
@@ -52,103 +48,116 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("YCZ").password("770519").roles("admin")
-//                .and()
-//                .withUser("YSH").password("050406").roles("user");
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userDetailsService());
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/css/**")
+                .antMatchers("/icon-fonts/**")
+                .antMatchers("/img/**")
+                .antMatchers("/js/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.portMapper().http(httpPort).mapsTo(httpsPort);
         http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
-        http.addFilterBefore(verifyCode, UsernamePasswordAuthenticationFilter.class);
-        http.rememberMe().key("xClass").tokenRepository(rememberMeTokenRepositoryService)
-                .addObjectPostProcessor(new ObjectPostProcessor<RememberMeAuthenticationFilter>() {
-                    @Override
-                    public <O extends RememberMeAuthenticationFilter> O postProcess(O object) {
 
-                        RememberMeAuthenticationFilter newFilter = new RememberMeAuthenticationFilter(
-                                (AuthenticationManager) getByReflection(object, "authenticationManager"),
-                                (RememberMeServices) getByReflection(object, "rememberMeServices")
-                        ) {
-                            @Override
-                            protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
-                                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                                request.getSession().setAttribute("userName", auth.getName());
-                            }
-                        };
-                        return (O) newFilter;
-                    }
+//        http.addFilterBefore(new MobilePhoneVerifyCodeFilter(customAuthenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
-                    private <O extends RememberMeAuthenticationFilter> Object getByReflection(O object, String name) {
-                        Field field = ReflectionUtils.findField(object.getClass(), name);
-                        ReflectionUtils.makeAccessible(field);
-                        return ReflectionUtils.getField(field, object);
-                    }
-                });
         http.authorizeRequests()
                 .antMatchers("/admin/**")
                 .hasRole("admin")
                 .antMatchers("/submit/**")
+                .rememberMe()
+                .antMatchers("/submit/**")
                 .hasRole("user")
 //                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("admin")
+//                .antMatchers("/monitor/**")
+//                .fullyAuthenticated()
                 .antMatchers("/monitor/**")
                 .hasRole("admin")
 //                .antMatchers("/monitor/**").fullyAuthenticated()
                 .anyRequest()
-                .permitAll()
-                .and()
-                .formLogin()
+                .permitAll();
+
+        http.formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/doLogin")
                 .usernameParameter("name")
                 .passwordParameter("password")
-                .successHandler((req, resp, auth) -> {
-                    req.getSession().setAttribute("userName", auth.getName());
-                    String referer = req.getHeader("referer");
-                    if (referer.contains("login")) {
-                        resp.sendRedirect("/index");
-                    } else {
-                        resp.sendRedirect(referer);
-                    }
-                })
-                .failureHandler((req, resp, e) -> {
-                    System.out.println("==> " + e);
-                    String error = "Unknown Error !!!";
-                    if (e instanceof LockedException) {
-                        error = "Account Locked !!!";
-                    } else if (e instanceof BadCredentialsException) {
-                        error = "Bad Credentials !!!";
-                    } else if (e instanceof DisabledException) {
-                        error = "Account Disabled !!!";
-                    } else if (e instanceof AccountExpiredException) {
-                        error = "Account Expired !!!";
-                    } else if (e instanceof CredentialsExpiredException) {
-                        error = "Credentials Expired !!!";
-                    }
-                    resp.sendRedirect("/login?error=" + error);
-                })
+//                .successHandler((req, resp, auth) -> {
+//                    String referer = req.getHeader("referer");
+//                    if (referer == null || referer.contains("login")) {
+//                        resp.sendRedirect("/index");
+//                    } else {
+//                        resp.sendRedirect(referer);
+//                    }
+//                })
+                .successHandler(customAuthenticationSuccessHandler)
+//                .failureHandler((req, resp, e) -> {
+//                    String error;
+//                    if (e instanceof LockedException) {
+//                        error = "Account Locked !!!";
+//                    } else if (e instanceof BadCredentialsException) {
+//                        error = "Bad Credentials !!!";
+//                    } else if (e instanceof DisabledException) {
+//                        error = "Account Disabled !!!";
+//                    } else if (e instanceof AccountExpiredException) {
+//                        error = "Account Expired !!!";
+//                    } else if (e instanceof CredentialsExpiredException) {
+//                        error = "Credentials Expired !!!";
+//                    } else {
+//                        error = e.getMessage();
+//                    }
+//                    resp.sendRedirect("/login?error=" + URLEncoder.encode(error, "UTF-8"));
+//                })
+                .failureHandler(customAuthenticationFailureHandler)
                 .and()
-//                .rememberMe()
-//                .key("xClass")
-//                .and()
-                .logout()
+                .rememberMe()
+                .rememberMeCookieName("remember")
+                .rememberMeParameter("remember")
+                .key("xClass")
+                .tokenRepository(customRememberMeTokenRepositoryImpl)
+                .tokenValiditySeconds(60 * 60 * 24 * 30)
+                .useSecureCookie(true);
+
+        http.logout()
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/index")
-                .and()
-                .csrf().disable();
+                .deleteCookies("JSESSIONID");
+
+        http.csrf().disable();
+
+        http.sessionManagement()
+                .invalidSessionUrl("/login?error=" + URLEncoder.encode("The session has expired, please log in again !", "UTF-8"))
+                .maximumSessions(1)
+                .expiredUrl("/login?error=" + URLEncoder.encode("You have logged in on another device, this login was forced to go offline !", "UTF-8"))
+                .maxSessionsPreventsLogin(false);
+
+        http.apply(mobilePhoneAuthenticationConfig);
+    }
+
+    CustomAuthenticationProvider customAuthenticationProvider() {
+        CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider();
+        customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        customAuthenticationProvider.setUserDetailsService(userDetailsService());
+        return customAuthenticationProvider;
     }
 
     @Bean
-    RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_admin > ROLE_user";
-        roleHierarchy.setHierarchy(hierarchy);
-        return roleHierarchy;
+    @Override
+    protected UserDetailsService userDetailsService() {
+        return new UserService();
     }
 
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() {
+        return new ProviderManager(Collections.singletonList(customAuthenticationProvider()));
+    }
 }

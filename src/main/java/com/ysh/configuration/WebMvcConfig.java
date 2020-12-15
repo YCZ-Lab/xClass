@@ -2,7 +2,6 @@ package com.ysh.configuration;
 
 import com.ysh.interceptor.Request;
 import com.ysh.service.LogsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -10,8 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Autowired
-    LogsService logsService;
+    final LogsService logsService;
+
+    public WebMvcConfig(LogsService logsService) {
+        this.logsService = logsService;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -27,7 +29,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("eVideos").setViewName("eVideos");
         registry.addViewController("ePodcasts").setViewName("ePodcasts");
         registry.addViewController("contact").setViewName("contact");
-        registry.addViewController("test").setViewName("test");
+        //////////////////////////////////////////////////////////////////////////////////////////
+        registry.addViewController("mLogin").setViewName("mobileLogin");
+        registry.addViewController("twitch").setViewName("twitch");
+        registry.addViewController("paypal").setViewName("paypal");
     }
 
     @Override
@@ -39,4 +44,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/js/**");
 //        registry.addInterceptor(new VerifyCodeRegister()).addPathPatterns("/register");
     }
+
 }

@@ -68,7 +68,8 @@ public class VerifyCode {
             g2.drawString(s, x, height - 15);
         }
         this.text = sb.toString();
-        drawLine(image);
+//开发模式关闭"绘制干扰线"
+//        drawLine(image);
         return image;
     }
 

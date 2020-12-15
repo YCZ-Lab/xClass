@@ -29,14 +29,16 @@
 </head>
 <body class="">
 
-<!-- Header Section -->
+<!-- Header Section  -->
+<!--th:text="${session.SPRING_SECURITY_CONTEXT} ? ${session.SPRING_SECURITY_CONTEXT.authentication.principal.userName} : 'Welcome'"-->
 <header class="header-section" th:fragment="navigationBar">
     <a href="/logout" th:href="logout" class="site-logo">
         <img class="d-sm-inline-block d-md-inline-block d-lg-inline-block" src="../../static/img/logo.png"
              th:src="@{img/logo.png}"
              alt="">
         <button class="btn btn-outline-success ml-3 btn-sm d-none d-sm-inline-block d-md-inline-block d-lg-inline-block"
-                th:text="${session.userName} ? ${session.userName} : 'Welcome'" title="Sign out"
+                th:text="${session.userName} ? ${session.userName} : 'Welcome'"
+                title="Sign out"
                 style="min-width: 120px;">
             Welcome
         </button>
@@ -233,7 +235,7 @@
                 <h2 class="text-center">login</h2>
             </div>
             <div class="modal-body">
-                <form class="form-group" method="post" action="/login">
+                <form class="form-group" method="post" action="/doLogin">
                     <div class="row mb-2">
                         <div class="col">
                             <input id="name" name="name" class="form-control rounded-pill" type="text"
@@ -260,8 +262,8 @@
                     </div>
                     <div class="row">
                         <div class="col custom-control custom-switch ml-3">
-                            <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
-                            <label class="custom-control-label text-dark" for="remember-me"><small>Remember
+                            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+                            <label class="custom-control-label text-dark" for="remember"><small>Remember
                                 Me</small></label>
                         </div>
                     </div>
@@ -308,6 +310,13 @@
                             <input id="pw" name="password" class="form-control rounded-pill"
                                    type="password"
                                    placeholder="Your Password">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <input id="mobilePhone" name="mobilePhone" class="form-control rounded-pill"
+                                   type="number"
+                                   placeholder="Your Mobile Phone">
                         </div>
                     </div>
                     <div class="row mb-2">
